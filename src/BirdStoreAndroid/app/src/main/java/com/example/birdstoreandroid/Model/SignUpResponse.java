@@ -1,4 +1,4 @@
-package com.example.birdstoreandroid;
+package com.example.birdstoreandroid.Model;
 
 import java.util.List;
 

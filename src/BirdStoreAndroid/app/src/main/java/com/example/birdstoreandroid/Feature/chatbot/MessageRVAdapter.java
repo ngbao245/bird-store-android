@@ -1,4 +1,4 @@
-package com.example.birdstoreandroid.chatbot;
+package com.example.birdstoreandroid.Feature.chatbot;
 
 import android.content.Context;
 import android.view.LayoutInflater;

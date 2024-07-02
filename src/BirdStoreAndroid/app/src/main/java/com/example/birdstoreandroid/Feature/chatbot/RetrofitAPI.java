@@ -1,4 +1,4 @@
-package com.example.birdstoreandroid.chatbot;
+package com.example.birdstoreandroid.Feature.chatbot;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

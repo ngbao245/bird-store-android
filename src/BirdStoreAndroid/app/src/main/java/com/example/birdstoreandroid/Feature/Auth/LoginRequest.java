@@ -1,4 +1,4 @@
-package com.example.birdstoreandroid;
+package com.example.birdstoreandroid.Feature.Auth;
 
 public class LoginRequest {
     private String userName;

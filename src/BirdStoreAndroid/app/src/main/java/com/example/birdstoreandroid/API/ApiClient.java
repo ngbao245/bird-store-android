@@ -1,4 +1,6 @@
-package com.example.birdstoreandroid;
+package com.example.birdstoreandroid.API;
+
+import com.example.birdstoreandroid.IService.UserService;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;

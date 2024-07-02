@@ -1,4 +1,4 @@
-package com.example.birdstoreandroid;
+package com.example.birdstoreandroid.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -27,6 +27,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.example.birdstoreandroid.API.ApiClient;
+import com.example.birdstoreandroid.Feature.Auth.LoginRequest;
+import com.example.birdstoreandroid.Feature.Auth.LoginResponse;
+import com.example.birdstoreandroid.R;
 import com.google.android.material.textfield.TextInputEditText;
 
 import retrofit2.Call;
