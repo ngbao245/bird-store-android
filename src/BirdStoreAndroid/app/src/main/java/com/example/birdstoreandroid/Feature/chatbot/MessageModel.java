@@ -1,4 +1,4 @@
-package com.example.birdstoreandroid.chatbot;
+package com.example.birdstoreandroid.Feature.chatbot;
 
 public class MessageModel {
     private String cnt;

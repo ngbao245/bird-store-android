@@ -1,4 +1,4 @@
-package com.example.birdstoreandroid;
+package com.example.birdstoreandroid.Model;
 
 public class SignUpRequest {
     private String userName;

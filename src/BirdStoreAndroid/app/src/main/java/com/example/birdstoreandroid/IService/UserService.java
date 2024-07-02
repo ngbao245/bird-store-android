@@ -1,4 +1,9 @@
-package com.example.birdstoreandroid;
+package com.example.birdstoreandroid.IService;
+
+import com.example.birdstoreandroid.Feature.Auth.LoginRequest;
+import com.example.birdstoreandroid.Feature.Auth.LoginResponse;
+import com.example.birdstoreandroid.Model.SignUpRequest;
+import com.example.birdstoreandroid.Model.SignUpResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

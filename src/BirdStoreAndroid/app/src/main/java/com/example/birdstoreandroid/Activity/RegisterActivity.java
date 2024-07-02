@@ -1,4 +1,4 @@
-package com.example.birdstoreandroid;
+package com.example.birdstoreandroid.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +14,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.birdstoreandroid.API.ApiClient;
+import com.example.birdstoreandroid.R;
+import com.example.birdstoreandroid.Model.SignUpRequest;
+import com.example.birdstoreandroid.Model.SignUpResponse;
 import com.google.android.material.textfield.TextInputEditText;
 
 import retrofit2.Call;

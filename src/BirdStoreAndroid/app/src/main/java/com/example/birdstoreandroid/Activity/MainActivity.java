@@ -1,17 +1,14 @@
-package com.example.birdstoreandroid;
+package com.example.birdstoreandroid.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import com.example.birdstoreandroid.chatbot.ChatbotActivity;
+import com.example.birdstoreandroid.R;
+import com.example.birdstoreandroid.Feature.chatbot.ChatbotActivity;
 
 public class MainActivity extends AppCompatActivity {
     ImageView ivChatbot;
