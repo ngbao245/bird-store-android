@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +26,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
-    TextInputEditText userName, userPassword, userEmail, userPhone, addressLine;
+    EditText userName, userPassword, userEmail, userPhone, addressLine;
     Button signup;
     TextView login;
 
