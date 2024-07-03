@@ -1,6 +1,9 @@
 package com.example.birdstoreandroid.Feature.GetProduct;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -32,6 +35,18 @@ public class GetProductActivity extends AppCompatActivity {
 
         listView = findViewById(R.id.lvGetProduct);
         fetchProducts();
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                GetProductRequest selectedProduct = (GetProductRequest) parent.getItemAtPosition(position);
+                String productId = selectedProduct.getId();
+
+                Intent intent = new Intent(GetProductActivity.this, ProductDetailActivity.class);
+                intent.putExtra("productId", productId);
+                startActivity(intent);
+            }
+        });
     }
 
     private void fetchProducts() {

@@ -17,6 +17,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="33">
         <activity
+            android:name=".Feature.GetProduct.ProductDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".Feature.GetProduct.GetProductActivity"
             android:exported="false" />
         <activity
@@ -30,13 +33,13 @@
         </activity>
         <activity
             android:name=".Activity.MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".Activity.RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".Feature.chatbot.ChatbotActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>
