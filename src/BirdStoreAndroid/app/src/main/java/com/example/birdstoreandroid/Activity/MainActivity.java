@@ -8,13 +8,14 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.birdstoreandroid.Feature.Cart.CartActivity;
 import com.example.birdstoreandroid.Feature.GetProduct.GetProductActivity;
 import com.example.birdstoreandroid.R;
 import com.example.birdstoreandroid.Feature.chatbot.ChatbotActivity;
 
 public class MainActivity extends AppCompatActivity {
     ImageView ivChatbot;
-    Button btnProductMenu;
+    Button btnProductMenu, cart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
         ivChatbot = (ImageView) findViewById(R.id.ivChatbot);
         btnProductMenu = (Button) findViewById(R.id.btnProductMenu);
+        cart = (Button) findViewById(R.id.Cartbtn);
 
         ivChatbot.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,6 +38,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, GetProductActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CartActivity.class);
                 startActivity(intent);
             }
         });

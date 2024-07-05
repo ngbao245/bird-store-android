@@ -8,7 +8,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
-    private static final String BASE_URL = "http://birdsellingapi.site/api/";
+    private static final String BASE_URL = "https://birdsellingapi.site/api/";
     private static ApiClient instance;
     private Retrofit retrofit;
 
@@ -30,7 +30,7 @@ public class ApiClient {
     private static Retrofit getRetrofit() {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build();
-        Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl("http://birdsellingapi.site/api/").client(okHttpClient).build();
+        Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl("https://birdsellingapi.site/api/").client(okHttpClient).build();
         return retrofit;
     }
     public static UserService getUserService() {
