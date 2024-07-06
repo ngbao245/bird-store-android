@@ -29,10 +29,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.example.birdstoreandroid.API.ApiClient;
-import com.example.birdstoreandroid.Feature.Auth.LoginRequest;
-import com.example.birdstoreandroid.Feature.Auth.LoginResponse;
+import com.example.birdstoreandroid.Model.LoginRequest;
+import com.example.birdstoreandroid.Model.LoginResponse;
 import com.example.birdstoreandroid.R;
-import com.google.android.material.textfield.TextInputEditText;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -110,8 +109,14 @@ public class LoginActivity extends AppCompatActivity {
 
     public void login() {
         LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setUserName(userName.getText().toString());
-        loginRequest.setUserPassword(userPassword.getText().toString());
+        loginRequest.setUserName(userName.getText().toString().trim());
+        loginRequest.setUserPassword(userPassword.getText().toString().trim());
+
+        String usernameInput = userName.getText().toString().trim();
+        String passwordInput = userPassword.getText().toString().trim();
+        Log.d("TAGTAG", "Username: " + usernameInput);
+        Log.d("TAGTAG", "Password: " + passwordInput);
+
 
         Call<LoginResponse> loginResponseCall = ApiClient.getUserService().userLogin(loginRequest);
         loginResponseCall.enqueue(new Callback<LoginResponse>() {

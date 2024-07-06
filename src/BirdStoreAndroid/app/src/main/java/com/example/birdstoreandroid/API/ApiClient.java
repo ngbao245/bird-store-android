@@ -8,7 +8,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
-    private static final String BASE_URL = "http://birdsellingapi.site/api/";
+    private static final String BASE_URL = "https://birdsellingapi.site/api/";
     private static ApiClient instance;
     private Retrofit retrofit;
 
@@ -34,7 +34,8 @@ public class ApiClient {
         return retrofit;
     }
     public static UserService getUserService() {
-        UserService userService = getRetrofit().create(UserService.class);
-        return userService;
+//        UserService userService = getRetrofit().create(UserService.class);
+//        return userService;
+        return getInstance().retrofit.create(UserService.class);
     }
 }

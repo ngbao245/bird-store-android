@@ -1,4 +1,4 @@
-package com.example.birdstoreandroid.Feature.Auth;
+package com.example.birdstoreandroid.Model;
 
 public class LoginResponse {
     private String messageError;
