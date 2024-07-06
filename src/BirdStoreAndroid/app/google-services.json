@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "499926849594",
+    "project_id": "birdstoreandroidapp",
+    "storage_bucket": "birdstoreandroidapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:499926849594:android:4f2c87ce54e13a0d847d03",
+        "android_client_info": {
+          "package_name": "com.example.birdstoreandroid"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfCO-9cF_UYwiZZ8wwu0_686I19Cyn2LQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

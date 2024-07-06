@@ -1,13 +1,12 @@
 package com.example.birdstoreandroid.IService;
 
-import com.example.birdstoreandroid.Feature.Auth.LoginRequest;
-import com.example.birdstoreandroid.Feature.Auth.LoginResponse;
+import com.example.birdstoreandroid.Model.LoginRequest;
+import com.example.birdstoreandroid.Model.LoginResponse;
 import com.example.birdstoreandroid.Model.AddToCartRequest;
 import com.example.birdstoreandroid.Model.AddToCartResponse;
 import com.example.birdstoreandroid.Model.GetCartResponse;
 import com.example.birdstoreandroid.Model.GetProductDetailRequest;
 import com.example.birdstoreandroid.Model.GetProductDetailResponse;
-import com.example.birdstoreandroid.Model.GetProductRequest;
 import com.example.birdstoreandroid.Model.GetProductResponse;
 import com.example.birdstoreandroid.Model.SignUpRequest;
 import com.example.birdstoreandroid.Model.SignUpResponse;

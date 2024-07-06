@@ -34,7 +34,8 @@ public class ApiClient {
         return retrofit;
     }
     public static UserService getUserService() {
-        UserService userService = getRetrofit().create(UserService.class);
-        return userService;
+//        UserService userService = getRetrofit().create(UserService.class);
+//        return userService;
+        return getInstance().retrofit.create(UserService.class);
     }
 }
