@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, CartActivity.class);
+                startActivity(intent);
                 }
         });
         btnTestNoti = findViewById(R.id.btnTestNoti);

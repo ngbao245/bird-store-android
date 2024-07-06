@@ -3,6 +3,7 @@ package com.example.birdstoreandroid.Feature.Cart;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,13 +30,14 @@ import retrofit2.Response;
 public class CartActivity extends AppCompatActivity {
     private RecyclerView cartRecyclerView;
     private CartAdapter cartAdapter;
-    private List<CartItem> cartItems;
+    private List<CartItem> cartItems = new ArrayList<>();
     private TextView emptyTxt;
     private TextView subTotalTxt;
     private TextView deliveryTxt;
     private TextView taxTxt;
     private TextView totalTxt;
     private AppCompatButton checkOutBtn;
+    private ImageView backBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class CartActivity extends AppCompatActivity {
         taxTxt = findViewById(R.id.taxtxt);
         totalTxt = findViewById(R.id.totaltxt);
         checkOutBtn = findViewById(R.id.checkOutbtn);
+        backBtn = findViewById(R.id.backBtn);
 
         cartRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         cartAdapter = new CartAdapter(cartItems);
@@ -65,8 +68,14 @@ public class CartActivity extends AppCompatActivity {
                 Toast.makeText(CartActivity.this, "Check Out", Toast.LENGTH_SHORT).show();
             }
         });
-
         fetchCartItems();
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+
+        });
     }
     private void fetchCartItems() {
         String accessToken = getAccessToken();

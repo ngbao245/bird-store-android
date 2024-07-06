@@ -3,7 +3,7 @@ package com.example.birdstoreandroid.Feature.Cart;
 public class CartItem {
     private String id;
     private String product_id;
-    private int price;
+    private float price;
     private int quantity;
     private Product product;
 
@@ -23,11 +23,11 @@ public class CartItem {
         this.product_id = product_id;
     }
 
-    public int getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 
