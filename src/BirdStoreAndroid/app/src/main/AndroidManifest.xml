@@ -19,7 +19,8 @@
         tools:targetApi="33">
         <activity
             android:name=".Activity.StoreMainActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
         <activity
             android:name=".Feature.Notification.CustomNotification"
             android:exported="false" />

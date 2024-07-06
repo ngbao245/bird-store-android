@@ -28,7 +28,6 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Back"
             android:src="@drawable/ic_arrow_back"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -40,6 +39,7 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:paddingStart="16dp"
             android:text="Chi tiết sản phẩm"
             android:textColor="@android:color/black"
@@ -101,6 +101,8 @@
         app:layout_constraintTop_toBottomOf="@id/product_name" />
 
     <!-- Product Gender -->
+
+    <!-- Description Title -->
     <TextView
         android:id="@+id/product_gender"
         android:layout_width="0dp"
@@ -109,11 +111,11 @@
         android:layout_marginTop="8dp"
         android:text="Gender"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/product_price"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/product_price" />
+        tools:layout_editor_absoluteY="439dp" />
 
-    <!-- Description Title -->
     <TextView
         android:id="@+id/description_title"
         android:layout_width="wrap_content"
@@ -145,8 +147,8 @@
     <LinearLayout
         android:id="@+id/bottom_layout"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="#C5FDAD"
+        android:layout_height="wrap_content"
+        android:background="#F1F1F1"
         android:orientation="horizontal"
         android:paddingHorizontal="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -193,7 +195,7 @@
         <!-- Add to Cart Button -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/add_to_cart"
-            android:layout_width="0dp"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
