@@ -33,7 +33,7 @@ public class GetProductDetailResponse {
         private String id;
         private String category_id;
         private String image;
-        private int price;
+        private float price;
         private String name;
         private boolean sex;
         private String description;
@@ -65,11 +65,11 @@ public class GetProductDetailResponse {
             this.image = image;
         }
 
-        public int getPrice() {
+        public float getPrice() {
             return price;
         }
 
-        public void setPrice(int price) {
+        public void setPrice(float price) {
             this.price = price;
         }
 

@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.birdstoreandroid.API.ApiClient;
+import com.example.birdstoreandroid.Model.CreateOrderRequest;
+import com.example.birdstoreandroid.Model.CreateOrderResponse;
 import com.example.birdstoreandroid.Model.GetCartResponse;
 import com.example.birdstoreandroid.R;
 
@@ -36,8 +38,9 @@ public class CartActivity extends AppCompatActivity {
     private TextView deliveryTxt;
     private TextView taxTxt;
     private TextView totalTxt;
-    private AppCompatButton checkOutBtn;
+    private AppCompatButton orderBtn;
     private ImageView backBtn;
+    private ArrayList<String> listIDCarts = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,17 +58,46 @@ public class CartActivity extends AppCompatActivity {
         deliveryTxt = findViewById(R.id.deliverytxt);
         taxTxt = findViewById(R.id.taxtxt);
         totalTxt = findViewById(R.id.totaltxt);
-        checkOutBtn = findViewById(R.id.checkOutbtn);
+        orderBtn = findViewById(R.id.orderbtn);
         backBtn = findViewById(R.id.backBtn);
 
         cartRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         cartAdapter = new CartAdapter(cartItems);
         cartRecyclerView.setAdapter(cartAdapter);
 
-        checkOutBtn.setOnClickListener(new View.OnClickListener() {
+        //data create order
+        listIDCarts.add("9947bff7b8084e64842da7f159cae52f");
+
+        orderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(CartActivity.this, "Check Out", Toast.LENGTH_SHORT).show();
+                CreateOrderRequest createOrderRequest = new CreateOrderRequest();
+                createOrderRequest.setListIDCarts(listIDCarts);
+                createOrderRequest.setUser_id("998c1178661a4c68a2b37a7289d72f87");
+                createOrderRequest.setPaymentMenthod_id("20175b0e8fdd491292fcde60d1a45f41");
+                createOrderRequest.setAddress("city");
+
+                String accessToken = getAccessToken();
+                ApiClient.getUserService().createOrder("Bearer " + accessToken, createOrderRequest).enqueue(new Callback<CreateOrderResponse>() {
+                    @Override
+                    public void onResponse(Call<CreateOrderResponse> call, Response<CreateOrderResponse> response) {
+                        if (response.isSuccessful()) {
+                            CreateOrderResponse createOrderResponse = response.body();
+                            if (createOrderResponse != null && createOrderResponse.getStatusCode() == 200) {
+                                Toast.makeText(CartActivity.this, "Order created successfully", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(CartActivity.this, "Failed to create order", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(CartActivity.this, "Failed to create order", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<CreateOrderResponse> call, Throwable t) {
+                        Toast.makeText(CartActivity.this, "An error occurred: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
         fetchCartItems();

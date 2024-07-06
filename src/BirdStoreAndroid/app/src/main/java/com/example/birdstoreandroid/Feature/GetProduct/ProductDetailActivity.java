@@ -94,7 +94,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         ApiClient.getUserService().addToCart("Bearer " + accessToken, addToCartRequest).enqueue(new Callback<AddToCartResponse>() {
             @Override
             public void onResponse(Call<AddToCartResponse> call, Response<AddToCartResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful() && response.body() != null && response.body().getStatusCode() == 200) {
                     AddToCartResponse.CartItem cartItem = response.body().getData();
                     Toast.makeText(ProductDetailActivity.this, "Item added to cart", Toast.LENGTH_SHORT).show();
                     // Optionally, you can update the UI or perform any other actions after adding the item to the cart

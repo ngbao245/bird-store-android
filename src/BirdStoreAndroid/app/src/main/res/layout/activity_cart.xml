@@ -179,14 +179,14 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/checkOutbtn"
+                android:id="@+id/orderbtn"
                 style="@android:style/Widget.Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:backgroundTint="#40d300"
-                android:text="Thanh toán"
+                android:text="Đặt hàng"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />

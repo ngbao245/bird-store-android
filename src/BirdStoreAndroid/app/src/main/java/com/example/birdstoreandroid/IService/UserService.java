@@ -1,5 +1,7 @@
 package com.example.birdstoreandroid.IService;
 
+import com.example.birdstoreandroid.Model.CreateOrderRequest;
+import com.example.birdstoreandroid.Model.CreateOrderResponse;
 import com.example.birdstoreandroid.Model.LoginRequest;
 import com.example.birdstoreandroid.Model.LoginResponse;
 import com.example.birdstoreandroid.Model.AddToCartRequest;
@@ -36,4 +38,7 @@ public interface UserService {
 
     @GET("Cart/api/Cart/Get-All-Cart")
     Call<GetCartResponse> getCart(@Header("Authorization") String accessToken);
+
+    @POST("Order/Create-Order")
+    Call<CreateOrderResponse> createOrder(@Header("Authorization") String token, @Body CreateOrderRequest createOrderRequest);
 }
