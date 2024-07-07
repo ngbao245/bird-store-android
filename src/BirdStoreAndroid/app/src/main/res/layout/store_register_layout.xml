@@ -5,56 +5,43 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".Activity.LoginActivity">
+    tools:context=".Activity.RegisterActivity">
 
-    <!-- Logo -->
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="40dp"
-        android:src="@drawable/ic_bird_large_icon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- Login Card -->
     <androidx.cardview.widget.CardView
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="10dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/logo"
-        app:layout_constraintVertical_bias="0.5">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/custom_edittext"
             android:orientation="vertical"
             android:padding="24dp">
 
-            <!-- Login Title -->
             <TextView
                 android:id="@+id/loginText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Đăng nhập"
+                android:text="Đăng ký"
                 android:textAlignment="center"
-                android:textColor="@color/red"
-                android:textSize="24sp"
+                android:textColor="@color/blue"
+                android:textSize="36sp"
                 android:textStyle="bold" />
 
-            <!-- Username Input -->
             <EditText
-                android:id="@+id/username"
+                android:id="@+id/reUserName"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="40dp"
                 android:background="@drawable/custom_edittext"
                 android:drawableLeft="@drawable/baseline_account_circle_24"
                 android:drawablePadding="8dp"
@@ -63,9 +50,8 @@
                 android:padding="8dp"
                 android:textColor="@color/black" />
 
-            <!-- Password Input -->
             <EditText
-                android:id="@+id/password"
+                android:id="@+id/rePassword"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
@@ -77,44 +63,73 @@
                 android:padding="8dp"
                 android:textColor="@color/black" />
 
-            <!-- Login Button -->
+            <EditText
+                android:id="@+id/reEmail"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/custom_edittext"
+                android:drawableLeft="@drawable/baseline_mail_24"
+                android:drawablePadding="8dp"
+                android:hint="Nhập email"
+                android:inputType="textEmailAddress"
+                android:padding="8dp"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/rePhone"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/custom_edittext"
+                android:drawableLeft="@drawable/baseline_call_24"
+                android:drawablePadding="8dp"
+                android:hint="Nhập số điện thoại"
+                android:inputType="phone"
+                android:padding="8dp"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/reAddress"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/custom_edittext"
+                android:drawableLeft="@drawable/baseline_home_24"
+                android:drawablePadding="8dp"
+                android:hint="Nhập địa chỉ"
+                android:inputType="text"
+                android:padding="8dp"
+                android:textColor="@color/black" />
+
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/buttonLogin"
+                android:id="@+id/buttonRegister"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/button_rounded"
                 android:elevation="4dp"
                 android:shadowRadius="@android:integer/config_longAnimTime"
-                android:text="Đăng nhập"
+                android:text="Đăng ký"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:cornerRadius="25dp" />
 
-            <!-- Google Sign In Button -->
-            <com.developer.gbuttons.GoogleSignInButton
-                android:id="@+id/googleBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:padding="8dp"
-                android:text="Đăng nhập bằng Google"
-                app:isDarkTheme="true" />
-
-
-            <!-- Register Link -->
             <TextView
-                android:id="@+id/linkRegister"
+                android:id="@+id/linkLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:padding="8dp"
-                android:text="Chưa có tài khoản? Đăng ký"
+                android:text="Đã có tài khoản? Đăng nhập"
                 android:textAlignment="center"
                 android:textColor="@color/transparent"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
         </LinearLayout>
+
     </androidx.cardview.widget.CardView>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

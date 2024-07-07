@@ -86,7 +86,8 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:contentDescription="Email Icon"
-                android:src="@drawable/ic_email" />
+                android:src="@drawable/ic_email"
+                app:tint="@color/blue" />
 
             <TextView
                 android:id="@+id/tv_userEmail"
@@ -110,7 +111,8 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:contentDescription="Phone Icon"
-                android:src="@drawable/ic_phone" />
+                android:src="@drawable/ic_phone"
+                app:tint="@color/blue" />
 
             <TextView
                 android:id="@+id/tv_userPhone"
@@ -134,7 +136,8 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:contentDescription="Location Icon"
-                android:src="@drawable/ic_location" />
+                android:src="@drawable/ic_location"
+                app:tint="@color/blue" />
 
             <TextView
                 android:id="@+id/tv_addressLine"
