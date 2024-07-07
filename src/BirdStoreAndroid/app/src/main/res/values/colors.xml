@@ -7,6 +7,8 @@
     <color name="orange">#FFA000</color>
     <color name="purple">#EADDFF</color>
     <color name="red">#F7001E</color>
+    <color name="blue">#4285F4</color>
+    <color name="transparent">#5C000000</color>
 
     <!--  user_layout  -->
     <color name="primaryColor">#6200EE</color>

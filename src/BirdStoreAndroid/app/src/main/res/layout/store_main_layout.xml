@@ -103,7 +103,7 @@
             android:layout_marginStart="272dp"
             android:layout_marginTop="8dp"
             android:text="Xem tất cả"
-            android:textColor="@color/lavender"
+            android:textColor="@color/blue"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"

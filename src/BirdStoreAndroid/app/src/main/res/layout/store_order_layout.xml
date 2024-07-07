@@ -97,7 +97,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:text="Thêm chim"
-        android:textColor="@color/lavender"
+        android:textColor="@color/blue"
         android:textSize="16sp"
         android:textStyle="bold" />
 
