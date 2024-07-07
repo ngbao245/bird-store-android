@@ -75,12 +75,24 @@
             android:textStyle="bold" />
     </LinearLayout>
 
+    <!-- Distance and Time TextView -->
+    <TextView
+        android:id="@+id/textViewDistanceTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nana"
+        android:layout_marginTop="8dp"
+        android:paddingStart="16dp"
+        android:text="5 km - 15 phút"
+        android:textSize="16sp"
+        android:textColor="@color/black" />
+
     <!-- TextViews Aligned Horizontally -->
     <TextView
         android:id="@+id/categories_listall_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/nana"
+        android:layout_below="@id/textViewDistanceTime"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
@@ -93,7 +105,7 @@
         android:id="@+id/textViewOrderDetailsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/nana"
+        android:layout_below="@id/textViewDistanceTime"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="CHI TIẾT ĐƠN HÀNG"
@@ -104,7 +116,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewOrderDetails"
         android:layout_width="match_parent"
-        android:layout_height="454dp"
+        android:layout_height="341dp"
         android:layout_below="@id/textViewOrderDetailsTitle"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
