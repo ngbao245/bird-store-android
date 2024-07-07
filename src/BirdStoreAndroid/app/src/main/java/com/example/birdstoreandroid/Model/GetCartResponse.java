@@ -1,12 +1,14 @@
 package com.example.birdstoreandroid.Model;
 
+import com.example.birdstoreandroid.Feature.Order.OrderItem;
+
 import java.util.Collection;
-import java.util.List;
 
 public class GetCartResponse {
     private String messageError;
     private int statusCode;
     private Collection<? extends com.example.birdstoreandroid.Feature.Cart.CartItem> data;
+    private Collection<? extends com.example.birdstoreandroid.Feature.Order.OrderItem> dataOrder;
 
     public String getMessageError() {
         return messageError;
@@ -30,6 +32,14 @@ public class GetCartResponse {
 
     public void setData(Collection<? extends com.example.birdstoreandroid.Feature.Cart.CartItem> data) {
         this.data = data;
+    }
+
+    public Collection<? extends com.example.birdstoreandroid.Feature.Order.OrderItem> getDataOrder() {
+        return dataOrder;
+    }
+
+    public void setDataOrder(Collection<? extends com.example.birdstoreandroid.Feature.Order.OrderItem> dataOrder) {
+        this.dataOrder = dataOrder;
     }
 
     public class CartItem {

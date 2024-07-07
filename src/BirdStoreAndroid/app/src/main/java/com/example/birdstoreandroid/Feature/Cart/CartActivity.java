@@ -33,33 +33,18 @@ public class CartActivity extends AppCompatActivity {
     private RecyclerView cartRecyclerView;
     private CartAdapter cartAdapter;
     private List<CartItem> cartItems = new ArrayList<>();
-    private TextView emptyTxt;
-    private TextView subTotalTxt;
-    private TextView deliveryTxt;
-    private TextView taxTxt;
     private TextView totalTxt;
-    private AppCompatButton orderBtn;
-    private ImageView backBtn;
+    private AppCompatButton checkoutBtn;
     private ArrayList<String> listIDCarts = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_cart);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-        cartRecyclerView = findViewById(R.id.cartView);
-        emptyTxt = findViewById(R.id.emptyTxt);
-        subTotalTxt = findViewById(R.id.subTotaltxt);
-        deliveryTxt = findViewById(R.id.deliverytxt);
-        taxTxt = findViewById(R.id.taxtxt);
-        totalTxt = findViewById(R.id.totaltxt);
-        orderBtn = findViewById(R.id.orderbtn);
-        backBtn = findViewById(R.id.backBtn);
+        setContentView(R.layout.store_cart_layout);
+        cartRecyclerView = findViewById(R.id.recyclerViewCart);
+        totalTxt = findViewById(R.id.textViewTotalPrice);
+        checkoutBtn = findViewById(R.id.buttonCheckout);
 
         cartRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         cartAdapter = new CartAdapter(cartItems);
@@ -68,7 +53,7 @@ public class CartActivity extends AppCompatActivity {
         //data create order
         listIDCarts.add("9947bff7b8084e64842da7f159cae52f");
 
-        orderBtn.setOnClickListener(new View.OnClickListener() {
+        checkoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CreateOrderRequest createOrderRequest = new CreateOrderRequest();
@@ -101,13 +86,6 @@ public class CartActivity extends AppCompatActivity {
             }
         });
         fetchCartItems();
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-
-        });
     }
     private void fetchCartItems() {
         String accessToken = getAccessToken();
@@ -123,10 +101,8 @@ public class CartActivity extends AppCompatActivity {
                         cartAdapter.notifyDataSetChanged();
 
                         if (cartItems.isEmpty()) {
-                            emptyTxt.setVisibility(View.VISIBLE);
                             cartRecyclerView.setVisibility(View.GONE);
                         } else {
-                            emptyTxt.setVisibility(View.GONE);
                             cartRecyclerView.setVisibility(View.VISIBLE);
                         }
 
@@ -150,19 +126,12 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private void updateCartSummary() {
-        int subTotal = 0;
-        int deliveryFee = 1; // TODO: Calculate delivery fee based on your logic
-        int taxFee = 1; // TODO: Calculate tax fee based on your logic
+        float total = 0;
 
         for (CartItem cartItem : cartItems) {
-            subTotal += cartItem.getProduct().getPrice() * cartItem.getQuantity();
+            total += cartItem.getProduct().getPrice();
         }
 
-        int total = subTotal + deliveryFee + taxFee;
-
-        subTotalTxt.setText(String.valueOf(subTotal));
-        deliveryTxt.setText(String.valueOf(deliveryFee));
-        taxTxt.setText(String.valueOf(taxFee));
         totalTxt.setText(String.valueOf(total));
     }
 

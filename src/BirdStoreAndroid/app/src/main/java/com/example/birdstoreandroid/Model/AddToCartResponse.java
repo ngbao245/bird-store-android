@@ -37,7 +37,7 @@ public class AddToCartResponse {
         private Object product;
         private Object order_id;
         private Object order;
-        private int price;
+        private float price;
         private int quantity;
         private String user_id;
         private Object user;
@@ -81,11 +81,11 @@ public class AddToCartResponse {
             this.order = order;
         }
 
-        public int getPrice() {
+        public float getPrice() {
             return price;
         }
 
-        public void setPrice(int price) {
+        public void setPrice(float price) {
             this.price = price;
         }
 

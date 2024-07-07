@@ -12,6 +12,7 @@ import com.example.birdstoreandroid.Feature.Cart.CartActivity;
 import com.example.birdstoreandroid.Feature.GetProduct.GetProductActivity;
 import com.example.birdstoreandroid.Feature.GoogleMap.MapsActivity;
 import com.example.birdstoreandroid.Feature.Notification.CustomNotification;
+import com.example.birdstoreandroid.Feature.Order.OrderActivity;
 import com.example.birdstoreandroid.R;
 import com.example.birdstoreandroid.Feature.chatbot.ChatbotActivity;
 
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     Button btnProductMenu, cart;
     Button btnTestNoti;
     Button btnMap;
+    Button orderList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         ivChatbot = (ImageView) findViewById(R.id.ivChatbot);
         btnProductMenu = (Button) findViewById(R.id.btnProductMenu);
         cart = (Button) findViewById(R.id.Cartbtn);
+        orderList = (Button) findViewById(R.id.buttonOrderList);
 
         btnMap = (Button) findViewById(R.id.btnMap);
 
@@ -68,6 +71,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                startActivity(intent);
+            }
+        });
+        orderList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, OrderActivity.class);
                 startActivity(intent);
             }
         });
