@@ -6,4 +6,12 @@
     <color name="green">#40d300</color>"
     <color name="orange">#FFA000</color>
     <color name="purple">#EADDFF</color>
+    <color name="red">#F7001E</color>
+
+    <!--  user_layout  -->
+    <color name="primaryColor">#6200EE</color>
+    <color name="primaryLightColor">#BB86FC</color>
+    <color name="primaryDarkColor">#3700B3</color>
+    <color name="secondaryColor">#03DAC5</color>
+
 </resources>
