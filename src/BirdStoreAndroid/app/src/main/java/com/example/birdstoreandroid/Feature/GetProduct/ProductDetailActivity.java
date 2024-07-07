@@ -1,6 +1,8 @@
 package com.example.birdstoreandroid.Feature.GetProduct;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,6 +16,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.birdstoreandroid.API.ApiClient;
+import com.example.birdstoreandroid.Model.AddToCartRequest;
+import com.example.birdstoreandroid.Model.AddToCartResponse;
 import com.example.birdstoreandroid.Model.GetProductDetailResponse;
 import com.example.birdstoreandroid.R;
 import com.squareup.picasso.Picasso;
@@ -78,9 +82,32 @@ public class ProductDetailActivity extends AppCompatActivity {
     private void updateQuantity() {
         pQuantity.setText(String.valueOf(quantity));
     }
+    private String getAccessToken() {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        return sharedPreferences.getString("access_token", "");
+    }
 
     private void addToCart() {
-        Toast.makeText(ProductDetailActivity.this, quantity + " item(s) added to cart", Toast.LENGTH_SHORT).show();
+        AddToCartRequest addToCartRequest = new AddToCartRequest();
+        addToCartRequest.setProduct_id(productId);
+        String accessToken = getAccessToken();
+        ApiClient.getUserService().addToCart("Bearer " + accessToken, addToCartRequest).enqueue(new Callback<AddToCartResponse>() {
+            @Override
+            public void onResponse(Call<AddToCartResponse> call, Response<AddToCartResponse> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().getStatusCode() == 200) {
+                    AddToCartResponse.CartItem cartItem = response.body().getData();
+                    Toast.makeText(ProductDetailActivity.this, "Item added to cart", Toast.LENGTH_SHORT).show();
+                    // Optionally, you can update the UI or perform any other actions after adding the item to the cart
+                } else {
+                    Toast.makeText(ProductDetailActivity.this, "Failed to add item to cart", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddToCartResponse> call, Throwable t) {
+                Toast.makeText(ProductDetailActivity.this, "An error occurred: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
     private void fetchProductDetails() {
         ApiClient.getUserService().getProductDetail(productId).enqueue(new Callback<GetProductDetailResponse>() {
