@@ -115,13 +115,11 @@
             android:layout_height="wrap_content"
             android:background="@drawable/button_rounded"
             android:elevation="4dp"
-            android:text="Tiếp tục"
             android:shadowRadius="@android:integer/config_longAnimTime"
+            android:text="TIẾP TỤC"
             android:textColor="@android:color/white"
             android:textSize="16dp"
             android:textStyle="bold" />
-
-
     </LinearLayout>
 
 </LinearLayout>

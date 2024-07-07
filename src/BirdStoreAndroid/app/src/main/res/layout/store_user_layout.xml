@@ -41,7 +41,7 @@
         android:contentDescription="User Profile Icon"
         android:elevation="6dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_bird_large_icon" />
+        android:src="@drawable/baseline_account_circle_24" />
 
     <!-- User Name -->
     <TextView
@@ -148,14 +148,16 @@
     </LinearLayout>
 
     <!-- Logout Button -->
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@color/purple"
-        android:text="Logout"
-        android:textColor="@android:color/white" />
+        android:background="@drawable/button_rounded"
+        android:elevation="4dp"
+        android:shadowRadius="@android:integer/config_longAnimTime"
+        android:text="ĐĂNG XUẤT"
+        android:textColor="@android:color/white"
+        android:textSize="16dp"
+        android:textStyle="bold" />
 </RelativeLayout>
