@@ -51,7 +51,7 @@ public class CartActivity extends AppCompatActivity {
         cartRecyclerView.setAdapter(cartAdapter);
 
         //data create order
-        listIDCarts.add("9947bff7b8084e64842da7f159cae52f");
+        listIDCarts.add("31caf235a8194346bccb5b624fda5835");
 
         checkoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +61,7 @@ public class CartActivity extends AppCompatActivity {
                 createOrderRequest.setUser_id("998c1178661a4c68a2b37a7289d72f87");
                 createOrderRequest.setPaymentMenthod_id("20175b0e8fdd491292fcde60d1a45f41");
                 createOrderRequest.setAddress("city");
+                createOrderRequest.setTransactionId("city");
 
                 String accessToken = getAccessToken();
                 ApiClient.getUserService().createOrder("Bearer " + accessToken, createOrderRequest).enqueue(new Callback<CreateOrderResponse>() {
