@@ -1,10 +1,10 @@
-package com.example.birdstoreandroid.Feature.Cart;
+package com.example.birdstoreandroid.Feature.Order;
 
-public class CartItem {
+public class OrderItem {
     private String id;
     private String product_id;
     private float price;
-    private Product product;
+    private OrderItem.Product product;
 
     public String getId() {
         return id;
@@ -30,18 +30,17 @@ public class CartItem {
         this.price = price;
     }
 
-    public Product getProduct() {
+    public OrderItem.Product getProduct() {
         return product;
     }
 
-    public void setProduct(Product product) {
+    public void setProduct(OrderItem.Product product) {
         this.product = product;
     }
 
     public class Product{
         private String id;
         private String name;
-        private String image;
         private float price;
 
         public String getId() {
@@ -58,14 +57,6 @@ public class CartItem {
 
         public void setName(String name) {
             this.name = name;
-        }
-
-        public String getImage() {
-            return image;
-        }
-
-        public void setImage(String image) {
-            this.image = image;
         }
 
         public float getPrice() {

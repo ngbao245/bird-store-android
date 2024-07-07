@@ -39,6 +39,8 @@
         <activity
             android:name=".Feature.Cart.CartActivity"
             android:exported="false" />
+        <activity android:name=".Feature.Order.OrderActivity"
+            android:exported="false"/>
         <activity
             android:name=".Feature.GetProduct.ProductDetailActivity"
             android:exported="false" />

@@ -24,7 +24,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     @NonNull
     @Override
     public CartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cart_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_cart, parent, false);
         return new CartViewHolder(view);
     }
 
@@ -43,20 +43,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         private ImageView itemImg;
         private TextView titleTxt;
         private TextView itemPriceTxt;
-        private TextView totalItemPrice;
-        private ImageView plusCartBtn;
-        private ImageView minusCartBtn;
-        private TextView itemQuantity;
 
         public CartViewHolder(@NonNull View itemView) {
             super(itemView);
-            itemImg = itemView.findViewById(R.id.itemImg);
-            titleTxt = itemView.findViewById(R.id.titletxt);
-            itemPriceTxt = itemView.findViewById(R.id.itemPricetxt);
-            totalItemPrice = itemView.findViewById(R.id.totalItemPrice);
-            plusCartBtn = itemView.findViewById(R.id.plusCartbtn);
-            minusCartBtn = itemView.findViewById(R.id.minusCartbtn);
-            itemQuantity = itemView.findViewById(R.id.itemQuantity);
+            itemImg = itemView.findViewById(R.id.imageViewProduct);
+            titleTxt = itemView.findViewById(R.id.textViewProductName);
+            itemPriceTxt = itemView.findViewById(R.id.textViewProductPrice);
         }
 
         public void bind(CartItem cartItem) {
@@ -64,40 +56,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
             titleTxt.setText(cartItem.getProduct().getName());
             itemPriceTxt.setText(String.valueOf(cartItem.getProduct().getPrice()));
-            itemQuantity.setText(String.valueOf(cartItem.getQuantity()));
-
-            int totalPrice = cartItem.getProduct().getPrice() * cartItem.getQuantity();
-            totalItemPrice.setText(String.valueOf(totalPrice));
-
-            plusCartBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int currentQuantity = cartItem.getQuantity();
-                    cartItem.setQuantity(currentQuantity + 1);
-                    itemQuantity.setText(String.valueOf(cartItem.getQuantity()));
-
-                    int updatedTotalPrice = cartItem.getProduct().getPrice() * cartItem.getQuantity();
-                    totalItemPrice.setText(String.valueOf(updatedTotalPrice));
-
-                    // TODO: Update cart item quantity on the server
-                }
-            });
-
-            minusCartBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int currentQuantity = cartItem.getQuantity();
-                    if (currentQuantity > 1) {
-                        cartItem.setQuantity(currentQuantity - 1);
-                        itemQuantity.setText(String.valueOf(cartItem.getQuantity()));
-
-                        int updatedTotalPrice = cartItem.getProduct().getPrice() * cartItem.getQuantity();
-                        totalItemPrice.setText(String.valueOf(updatedTotalPrice));
-
-                        // TODO: Update cart item quantity on the server
-                    }
-                }
-            });
         }
     }
 }
