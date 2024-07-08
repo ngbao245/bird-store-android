@@ -13,6 +13,7 @@ import com.example.birdstoreandroid.Feature.GetProduct.GetProductActivity;
 import com.example.birdstoreandroid.Feature.GoogleMap.MapsActivity;
 import com.example.birdstoreandroid.Feature.Notification.CustomNotification;
 import com.example.birdstoreandroid.Feature.Order.OrderActivity;
+import com.example.birdstoreandroid.Feature.ZaloPay.OrderPayment;
 import com.example.birdstoreandroid.R;
 import com.example.birdstoreandroid.Feature.chatbot.ChatbotActivity;
 
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     Button btnTestNoti;
     Button btnMap;
     Button orderList;
+    Button btnZaloPay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
         orderList = (Button) findViewById(R.id.buttonOrderList);
 
         btnMap = (Button) findViewById(R.id.btnMap);
+
+        btnZaloPay = (Button) findViewById(R.id.btnZaloPay);
 
         ivChatbot.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +82,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, OrderActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnZaloPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                double total = 10000;
+                Intent intent = new Intent(MainActivity.this, OrderPayment.class);
+                intent.putExtra("total", total);
                 startActivity(intent);
             }
         });

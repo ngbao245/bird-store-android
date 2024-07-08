@@ -54,14 +54,15 @@ public class CartActivity extends AppCompatActivity {
         btnBack.setOnClickListener(v -> finish());
 
         //data create order
-        listIDCarts.add("2147ca2e26d74261a2c518b636a780b6");
+        //listIDCarts.add("2147ca2e26d74261a2c518b636a780b6");
+        String userId = getUserId();
 
         checkoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CreateOrderRequest createOrderRequest = new CreateOrderRequest();
                 createOrderRequest.setListIDCarts(listIDCarts);
-                createOrderRequest.setUser_id("998c1178661a4c68a2b37a7289d72f87");
+                createOrderRequest.setUser_id(userId);
                 createOrderRequest.setPaymentMenthod_id("20175b0e8fdd491292fcde60d1a45f41");
                 createOrderRequest.setAddress("city");
                 createOrderRequest.setTransactionId("city");
@@ -110,6 +111,12 @@ public class CartActivity extends AppCompatActivity {
                             cartRecyclerView.setVisibility(View.VISIBLE);
                         }
 
+                        for (CartItem cartItem : cartItems) {
+                            String cartItemId = cartItem.getId();
+                            // Do something with the cartItemId, e.g., add it to a list or perform some operation
+                            listIDCarts.add(cartItemId);
+                        }
+
                         updateCartSummary();
                     } else {
                         // Handle error
@@ -142,5 +149,9 @@ public class CartActivity extends AppCompatActivity {
     private String getAccessToken() {
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         return sharedPreferences.getString("access_token", "");
+    }
+    private String getUserId() {
+        SharedPreferences sharedPreferences = getSharedPreferences("uid", MODE_PRIVATE);
+        return sharedPreferences.getString("user", "");
     }
 }
