@@ -55,6 +55,10 @@ public class ProductDetailActivity extends AppCompatActivity {
         addToCart = findViewById(R.id.add_to_cart);
         productId = getIntent().getStringExtra("productId");
         fetchProductDetails();
+
+        ImageView btnBack = findViewById(R.id.back_button);
+        btnBack.setOnClickListener(v -> finish());
+
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,9 +84,11 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
     }
+
     private void updateQuantity() {
         pQuantity.setText(String.valueOf(quantity));
     }
+
     private String getAccessToken() {
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         return sharedPreferences.getString("access_token", "");
@@ -110,6 +116,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
     }
+
     private void fetchProductDetails() {
         ApiClient.getUserService().getProductDetail(productId).enqueue(new Callback<GetProductDetailResponse>() {
             @Override

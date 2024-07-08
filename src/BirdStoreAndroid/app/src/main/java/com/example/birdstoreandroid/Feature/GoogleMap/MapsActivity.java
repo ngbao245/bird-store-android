@@ -120,14 +120,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-
     private void calculateDistanceToDestination() {
         String destination = search_bar.getQuery().toString();
 
         destinationLatLng = getDestinationAddress(destination);
         if (destinationLatLng != null) {
             float distance = calculateDistance(userLocation, getDestination);
-            txtDistance.setText(" " + distance + " meters");
+            if ((distance / 1000) < 1) {
+                String formattedDistance = String.format("%.2f", distance);
+                txtDistance.setText(formattedDistance + " meters");
+            } else {
+                String formattedDistance = String.format("%.2f", distance / 1000);
+                txtDistance.setText(formattedDistance + " kilometers");
+            }
         } else {
             Toast.makeText(MapsActivity.this, " Cannot define address", Toast.LENGTH_SHORT).show();
         }
@@ -215,7 +220,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
 
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED

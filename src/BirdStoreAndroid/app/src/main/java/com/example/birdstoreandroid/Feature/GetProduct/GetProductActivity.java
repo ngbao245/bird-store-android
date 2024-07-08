@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -16,6 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.birdstoreandroid.API.ApiClient;
+import com.example.birdstoreandroid.Activity.UserActivity;
+import com.example.birdstoreandroid.Feature.GetCategory.GetCategoryActivity;
 import com.example.birdstoreandroid.Model.GetProductRequest;
 import com.example.birdstoreandroid.Model.GetProductResponse;
 import com.example.birdstoreandroid.R;
@@ -32,6 +36,10 @@ public class GetProductActivity extends AppCompatActivity implements GetProductA
 
     private RecyclerView product_recycler_view;
 
+    private ImageView userIcon;
+
+    private TextView viewCategory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +50,24 @@ public class GetProductActivity extends AppCompatActivity implements GetProductA
 
         product_recycler_view = findViewById(R.id.product_recycler_view);
         product_recycler_view.setLayoutManager(new LinearLayoutManager(this));
+
+        userIcon = (ImageView) findViewById(R.id.user_icon);
+        userIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GetProductActivity.this, UserActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        viewCategory = (TextView) findViewById(R.id.categories_listall_label);
+        viewCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GetProductActivity.this, GetCategoryActivity.class);
+                startActivity(intent);
+            }
+        });
 
         fetchProducts();
 

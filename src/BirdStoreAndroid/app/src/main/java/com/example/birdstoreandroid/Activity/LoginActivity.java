@@ -23,6 +23,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.developer.gbuttons.GoogleSignInButton;
+import com.example.birdstoreandroid.Feature.GetProduct.GetProductActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -50,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.store_login_layout);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -72,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
                     try {
                         task.getResult(ApiException.class);
                         finish();
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, GetProductActivity.class);
                         startActivity(intent);
                     } catch (ApiException e) {
                         Toast.makeText(LoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
@@ -129,7 +130,7 @@ public class LoginActivity extends AppCompatActivity {
                         // Login successful
                         String accessToken = loginResponse.getData().getToken();
                         saveAccessToken(accessToken);
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, GetProductActivity.class);
                         startActivity(intent);
                         finish();
                     } else {

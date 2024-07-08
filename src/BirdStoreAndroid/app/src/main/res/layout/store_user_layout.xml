@@ -9,7 +9,7 @@
 
     <!-- Menu Icon -->
     <ImageView
-        android:id="@+id/menu"
+        android:id="@+id/back_button"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_alignParentStart="true"
@@ -36,7 +36,7 @@
         android:id="@+id/profile_image"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_below="@id/menu"
+        android:layout_below="@id/back_button"
         android:layout_centerHorizontal="true"
         android:contentDescription="User Profile Icon"
         android:elevation="6dp"

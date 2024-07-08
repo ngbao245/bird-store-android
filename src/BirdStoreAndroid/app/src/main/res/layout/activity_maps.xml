@@ -30,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btnCalculation"
-        android:layout_marginTop="650dp"
+        android:layout_marginTop="500dp"
         android:layout_marginLeft="150dp"
         android:text="Calculate"
         android:background="@color/white"/>
@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtDistance"
-        android:layout_marginTop="500dp"
+        android:layout_marginTop="480dp"
         android:layout_marginLeft="150dp"
         android:text="Distance: "
         android:textStyle="bold"

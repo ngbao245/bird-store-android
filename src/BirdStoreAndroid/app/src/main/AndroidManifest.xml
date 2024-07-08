@@ -19,7 +19,15 @@
         android:theme="@style/Theme.BirdStoreAndroid"
         android:usesCleartextTraffic="true"
         tools:targetApi="33">
-
+        <activity
+            android:name=".Feature.GetCategory.GetCategoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.UserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.MainStoreActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -39,8 +47,9 @@
         <activity
             android:name=".Feature.Cart.CartActivity"
             android:exported="false" />
-        <activity android:name=".Feature.Order.OrderActivity"
-            android:exported="false"/>
+        <activity
+            android:name=".Feature.Order.OrderActivity"
+            android:exported="false" />
         <activity
             android:name=".Feature.GetProduct.ProductDetailActivity"
             android:exported="false" />
