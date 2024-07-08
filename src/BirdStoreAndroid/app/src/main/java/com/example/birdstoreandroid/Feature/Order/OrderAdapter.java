@@ -17,9 +17,9 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder>{
-    private List<OrderItem> orderItems;
+    private List<CartItem> orderItems;
 
-    public OrderAdapter(List<OrderItem> orderItems) {
+    public OrderAdapter(List<CartItem> orderItems) {
         this.orderItems = orderItems;
     }
 
@@ -32,7 +32,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
     @Override
     public void onBindViewHolder(@NonNull OrderAdapter.OrderViewHolder holder, int position) {
-        OrderItem orderItem = orderItems.get(position);
+        CartItem orderItem = orderItems.get(position);
         holder.bind(orderItem);
     }
 
@@ -51,7 +51,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             itemPriceTxt = itemView.findViewById(R.id.textViewProductPrice);
         }
 
-        public void bind(OrderItem orderItem) {
+        public void bind(CartItem orderItem) {
             titleTxt.setText(orderItem.getProduct().getName());
             itemPriceTxt.setText(String.valueOf(orderItem.getProduct().getPrice()));
         }

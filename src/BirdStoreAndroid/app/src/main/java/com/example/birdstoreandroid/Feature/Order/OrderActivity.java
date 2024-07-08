@@ -31,7 +31,7 @@ import retrofit2.Response;
 public class OrderActivity extends AppCompatActivity {
     private RecyclerView orderRecyclerView;
     private OrderAdapter orderAdapter;
-    private List<OrderItem> orderItems = new ArrayList<>();
+    private List<CartItem> orderItems = new ArrayList<>();
     private TextView subTotalTxt;
     private TextView deliveryTxt;
     private TextView taxTxt;
@@ -56,7 +56,7 @@ public class OrderActivity extends AppCompatActivity {
         orderRecyclerView.setAdapter(orderAdapter);
 
         //data create order
-        listIDCarts.add("9947bff7b8084e64842da7f159cae52f");
+        listIDCarts.add("2147ca2e26d74261a2c518b636a780b6");
 
         checkoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,10 +76,7 @@ public class OrderActivity extends AppCompatActivity {
                     GetCartResponse cartResponse = response.body();
                     if (cartResponse != null && cartResponse.getStatusCode() == 200) {
                         orderItems.clear();
-                        List<OrderItem> dataOrder = (List<OrderItem>) cartResponse.getDataOrder();
-                        if (dataOrder != null) {
-                            orderItems.addAll(dataOrder);
-                        }
+                        orderItems.addAll(cartResponse.getData());
                         orderAdapter.notifyDataSetChanged();
 
                         if (orderItems.isEmpty()) {
@@ -113,7 +110,7 @@ public class OrderActivity extends AppCompatActivity {
         float deliveryFee = 1;
         float taxFee = 1;
 
-        for (OrderItem orderItem : orderItems) {
+        for (CartItem orderItem : orderItems) {
             subTotal += orderItem.getProduct().getPrice();
         }
 
