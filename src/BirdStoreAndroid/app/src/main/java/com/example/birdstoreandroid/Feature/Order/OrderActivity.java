@@ -19,6 +19,7 @@ import com.example.birdstoreandroid.API.ApiClient;
 import com.example.birdstoreandroid.Activity.MainActivity;
 import com.example.birdstoreandroid.Feature.Cart.CartActivity;
 import com.example.birdstoreandroid.Feature.Cart.CartItem;
+import com.example.birdstoreandroid.Feature.GetProduct.GetProductActivity;
 import com.example.birdstoreandroid.Feature.ZaloPay.Api.CreateOrder;
 import com.example.birdstoreandroid.Feature.ZaloPay.OrderPayment;
 import com.example.birdstoreandroid.Feature.ZaloPay.PaymentNotification;
@@ -142,7 +143,7 @@ public class OrderActivity extends AppCompatActivity {
                     CreateOrderResponse createOrderResponse = response.body();
                     if (createOrderResponse != null && createOrderResponse.getStatusCode() == 200) {
                         Toast.makeText(OrderActivity.this, "Order created successfully", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(OrderActivity.this, CartActivity.class);
+                        Intent intent = new Intent(OrderActivity.this, GetProductActivity.class);
                         startActivity(intent);
                     } else {
                         Toast.makeText(OrderActivity.this, "Failed to create order", Toast.LENGTH_SHORT).show();
