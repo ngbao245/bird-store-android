@@ -129,7 +129,9 @@ public class LoginActivity extends AppCompatActivity {
                     if (loginResponse != null && loginResponse.getStatusCode() == 200) {
                         // Login successful
                         String accessToken = loginResponse.getData().getToken();
+                        String userId = loginResponse.getData().getResponseUserModel().getId();
                         saveAccessToken(accessToken);
+                        saveUserId(userId);
                         Intent intent = new Intent(LoginActivity.this, GetProductActivity.class);
                         startActivity(intent);
                         finish();
@@ -154,6 +156,12 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("access_token", accessToken);
+        editor.apply();
+    }
+    private void saveUserId(String userId) {
+        SharedPreferences sharedPreferences = getSharedPreferences("uid", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("user", userId);
         editor.apply();
     }
 }
