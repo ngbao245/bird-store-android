@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.birdstoreandroid.API.ApiClient;
 import com.example.birdstoreandroid.Activity.UserActivity;
+import com.example.birdstoreandroid.Feature.Cart.CartActivity;
 import com.example.birdstoreandroid.Feature.GetCategory.GetCategoryActivity;
 import com.example.birdstoreandroid.Feature.GetCategory.GetCategoryAdapter;
 import com.example.birdstoreandroid.Model.GetCategoryRequest;
@@ -20,6 +21,7 @@ import com.example.birdstoreandroid.Model.GetCategoryResponse;
 import com.example.birdstoreandroid.Model.GetProductRequest;
 import com.example.birdstoreandroid.Model.GetProductResponse;
 import com.example.birdstoreandroid.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -39,6 +41,8 @@ public class GetProductActivity extends AppCompatActivity implements GetProductA
     private GetCategoryAdapter categoryAdapter;
     private RecyclerView category_recycler_view;
 
+    private FloatingActionButton cart_button;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +53,8 @@ public class GetProductActivity extends AppCompatActivity implements GetProductA
 
         product_recycler_view = findViewById(R.id.product_recycler_view);
         category_recycler_view = findViewById(R.id.category_recycler_view);
+
+        cart_button = findViewById(R.id.cart_button);
 
         product_recycler_view.setLayoutManager(new LinearLayoutManager(this));
         category_recycler_view.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -67,6 +73,14 @@ public class GetProductActivity extends AppCompatActivity implements GetProductA
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(GetProductActivity.this, GetCategoryActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        cart_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GetProductActivity.this, CartActivity.class);
                 startActivity(intent);
             }
         });
