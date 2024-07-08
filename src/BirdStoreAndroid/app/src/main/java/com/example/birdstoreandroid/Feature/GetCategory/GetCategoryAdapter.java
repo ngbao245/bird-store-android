@@ -9,15 +9,22 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.birdstoreandroid.Model.GetCategoryRequest;
+import com.example.birdstoreandroid.Model.GetProductRequest;
 import com.example.birdstoreandroid.R;
+import com.example.birdstoreandroid.TextUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GetCategoryAdapter extends RecyclerView.Adapter<GetCategoryAdapter.CategoryViewHolder> {
     private List<GetCategoryRequest> categories;
 
+    private List<GetCategoryRequest> categoriesFull;
+
     public GetCategoryAdapter(List<GetCategoryRequest> categories) {
         this.categories = categories;
+
+        this.categoriesFull = new ArrayList<>(categories);
     }
 
     @NonNull
@@ -36,6 +43,21 @@ public class GetCategoryAdapter extends RecyclerView.Adapter<GetCategoryAdapter.
     @Override
     public int getItemCount() {
         return categories.size();
+    }
+
+    public void filter(String text) {
+        categories.clear();
+        if (text.isEmpty()) {
+            categories.addAll(categoriesFull);
+        } else {
+            text = TextUtils.normalize(text.toLowerCase());
+            for (GetCategoryRequest item : categoriesFull) {
+                if (TextUtils.normalize(item.getCategory_name().toLowerCase()).contains(text)) {
+                    categories.add(item);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     public class CategoryViewHolder extends RecyclerView.ViewHolder {

@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -28,6 +29,8 @@ public class GetCategoryActivity extends AppCompatActivity {
     private GetCategoryAdapter categoryAdapter;
     private RecyclerView category_recycler_view;
 
+    private SearchView searchView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,9 +41,27 @@ public class GetCategoryActivity extends AppCompatActivity {
 
 
         ImageView btnBack = findViewById(R.id.back_button);
+
+        searchView = (SearchView) findViewById(R.id.search_view);
+
         btnBack.setOnClickListener(v -> finish());
 
         fetchCategories();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false; // No action on text submit
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (categoryAdapter != null) {
+                    categoryAdapter.filter(newText);
+                }
+                return true;
+            }
+        });
     }
 
     private void fetchCategories() {

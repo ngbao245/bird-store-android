@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.birdstoreandroid.Model.GetProductRequest;
 import com.example.birdstoreandroid.R;
+import com.example.birdstoreandroid.TextUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -62,9 +63,9 @@ public class GetProductAdapter extends RecyclerView.Adapter<GetProductAdapter.Vi
         if (text.isEmpty()) {
             products.addAll(productsFull);
         } else {
-            text = text.toLowerCase();
+            text = TextUtils.normalize(text.toLowerCase());
             for (GetProductRequest item : productsFull) {
-                if (item.getName().toLowerCase().contains(text)) {
+                if (TextUtils.normalize(item.getName().toLowerCase()).contains(text)) {
                     products.add(item);
                 }
             }
