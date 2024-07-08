@@ -7,6 +7,7 @@ public class CreateOrderRequest {
     private String user_id;
     private String paymentMenthod_id;
     private String address;
+    private String transactionId;
 
     public List<String> getListIDCarts() {
         return listIDCarts;
@@ -38,5 +39,13 @@ public class CreateOrderRequest {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
     }
 }

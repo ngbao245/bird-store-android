@@ -39,6 +39,6 @@ public interface UserService {
     @GET("Cart/api/Cart/Get-All-Cart")
     Call<GetCartResponse> getCart(@Header("Authorization") String accessToken);
 
-    @POST("Order/Create-Order")
+    @POST("Order/api/Order/Create-Order")
     Call<CreateOrderResponse> createOrder(@Header("Authorization") String token, @Body CreateOrderRequest createOrderRequest);
 }
