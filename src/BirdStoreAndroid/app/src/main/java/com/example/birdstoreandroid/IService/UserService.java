@@ -2,6 +2,7 @@ package com.example.birdstoreandroid.IService;
 
 import com.example.birdstoreandroid.Model.CreateOrderRequest;
 import com.example.birdstoreandroid.Model.CreateOrderResponse;
+import com.example.birdstoreandroid.Model.GetCategoryResponse;
 import com.example.birdstoreandroid.Model.LoginRequest;
 import com.example.birdstoreandroid.Model.LoginResponse;
 import com.example.birdstoreandroid.Model.AddToCartRequest;
@@ -29,6 +30,9 @@ public interface UserService {
     //GetProductList
     @GET("Product/GetProduct")
     Call<GetProductResponse> getProducts();
+
+    @GET("BirdCategory/GetAll")
+    Call<GetCategoryResponse> getCategories();
 
     @GET("Product/GetProductByID/{id}")
     Call<GetProductDetailResponse> getProductDetail(@Path("id") String productId);
