@@ -132,8 +132,8 @@ public class LoginActivity extends AppCompatActivity {
                         String userId = loginResponse.getData().getResponseUserModel().getId();
                         saveAccessToken(accessToken);
                         saveUserId(userId);
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                        Intent intent = new Intent(LoginActivity.this, GetProductActivity.class);
+//                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, GetProductActivity.class);
                         startActivity(intent);
                         finish();
                     } else {
