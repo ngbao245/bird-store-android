@@ -3,12 +3,12 @@ package com.example.birdstoreandroid.IService;
 import com.example.birdstoreandroid.Model.CreateOrderRequest;
 import com.example.birdstoreandroid.Model.CreateOrderResponse;
 import com.example.birdstoreandroid.Model.GetCategoryResponse;
+import com.example.birdstoreandroid.Model.GetSingleUserResponse;
 import com.example.birdstoreandroid.Model.LoginRequest;
 import com.example.birdstoreandroid.Model.LoginResponse;
 import com.example.birdstoreandroid.Model.AddToCartRequest;
 import com.example.birdstoreandroid.Model.AddToCartResponse;
 import com.example.birdstoreandroid.Model.GetCartResponse;
-import com.example.birdstoreandroid.Model.GetProductDetailRequest;
 import com.example.birdstoreandroid.Model.GetProductDetailResponse;
 import com.example.birdstoreandroid.Model.GetProductResponse;
 import com.example.birdstoreandroid.Model.SignUpRequest;
@@ -20,10 +20,12 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface UserService {
     @POST("Auth/SignInUser")
     Call<LoginResponse> userLogin(@Body LoginRequest loginRequest);
+
     @POST("Auth/SignUpUser")
     Call<SignUpResponse> userSignUp(@Body SignUpRequest registerRequest);
 
@@ -45,4 +47,8 @@ public interface UserService {
 
     @POST("Order/api/Order/Create-Order")
     Call<CreateOrderResponse> createOrder(@Header("Authorization") String token, @Body CreateOrderRequest createOrderRequest);
+
+    //GetUser
+    @GET("User/GetSingleID")
+    Call<GetSingleUserResponse> getSingleUser(@Query("id") String id);
 }

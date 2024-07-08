@@ -50,6 +50,9 @@ public class CartActivity extends AppCompatActivity {
         cartAdapter = new CartAdapter(cartItems);
         cartRecyclerView.setAdapter(cartAdapter);
 
+        ImageView btnBack = findViewById(R.id.back_button);
+        btnBack.setOnClickListener(v -> finish());
+
         //data create order
         listIDCarts.add("2147ca2e26d74261a2c518b636a780b6");
 
