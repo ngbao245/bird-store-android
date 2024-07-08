@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, CartActivity.class);
                 startActivity(intent);
-                }
+            }
         });
         btnTestNoti = findViewById(R.id.btnTestNoti);
         btnTestNoti.setOnClickListener(new View.OnClickListener() {
@@ -86,14 +86,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btnZaloPay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                double total = 10000;
-                Intent intent = new Intent(MainActivity.this, OrderPayment.class);
-                intent.putExtra("total", total);
-                startActivity(intent);
-            }
-        });
+//        btnZaloPay.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                double total = 10000;
+//                Intent intent = new Intent(MainActivity.this, OrderPayment.class);
+//                intent.putExtra("total", total);
+//                startActivity(intent);
+//            }
+//        });
     }
 }

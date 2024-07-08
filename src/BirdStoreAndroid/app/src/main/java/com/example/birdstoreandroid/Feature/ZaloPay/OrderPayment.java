@@ -21,7 +21,6 @@ import vn.zalopay.sdk.ZaloPaySDK;
 import vn.zalopay.sdk.listeners.PayOrderListener;
 
 public class OrderPayment extends AppCompatActivity {
-
     TextView txtTongTien;
     Button btnThanhToan;
 
@@ -43,7 +42,7 @@ public class OrderPayment extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        Double total = intent.getDoubleExtra("total", (double) 0);
+        double total = 10000;
         String totalString = String.format("%.0f", total);
         txtTongTien.setText(Double.toString(total));
 
@@ -92,6 +91,7 @@ public class OrderPayment extends AppCompatActivity {
             }
         });
     }
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);

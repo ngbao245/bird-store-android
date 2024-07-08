@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.birdstoreandroid.API.ApiClient;
+import com.example.birdstoreandroid.Activity.MainActivity;
 import com.example.birdstoreandroid.Feature.Cart.CartActivity;
-import com.example.birdstoreandroid.Feature.Cart.CartAdapter;
 import com.example.birdstoreandroid.Feature.Cart.CartItem;
 import com.example.birdstoreandroid.Feature.ZaloPay.Api.CreateOrder;
 import com.example.birdstoreandroid.Feature.ZaloPay.OrderPayment;
@@ -56,21 +56,30 @@ public class OrderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.store_order_layout);
-        StrictMode.ThreadPolicy policy = new
-                StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+
         orderRecyclerView = findViewById(R.id.recyclerViewOrderDetails);
         subTotalTxt = findViewById(R.id.textViewTotalProduct);
         deliveryTxt = findViewById(R.id.textViewShippingFee);
         taxTxt = findViewById(R.id.textViewTax);
         totalTxt = findViewById(R.id.textViewTotal);
         checkoutBtn = findViewById(R.id.buttonCheckout);
+
+        StrictMode.ThreadPolicy policy = new
+                StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         ZaloPaySDK.init(2553, Environment.SANDBOX);
+
         Intent intent = getIntent();
+
+        //double total = Double.parseDouble(totalTxt.getText().toString().replace(" VNĐ", ""));
+        double total = 10000;
+        String totalString = String.format("%.0f", total);
 
         orderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         orderAdapter = new OrderAdapter(orderItems);
         orderRecyclerView.setAdapter(orderAdapter);
+
         String userId = getUserId();
 
         checkoutBtn.setOnClickListener(new View.OnClickListener() {
@@ -78,43 +87,17 @@ public class OrderActivity extends AppCompatActivity {
             public void onClick(View v) {
                 CreateOrder orderApi = new CreateOrder();
                 try {
-                    JSONObject data = orderApi.createOrder(totalTxt.toString());
+                    JSONObject data = orderApi.createOrder(totalString);
                     String code = data.getString("return_code");
                     if (code.equals("1")) {
                         String token = data.getString("zp_trans_token");
                         ZaloPaySDK.getInstance().payOrder(OrderActivity.this, token, "demozpdk://app", new PayOrderListener() {
                             @Override
                             public void onPaymentSucceeded(String transactionId, String s1, String s2) {
-                                if (!transactionId.isEmpty()){
-                                    CreateOrderRequest createOrderRequest = new CreateOrderRequest();
-                                    createOrderRequest.setListIDCarts(listIDCarts);
-                                    createOrderRequest.setUser_id(userId);
-                                    createOrderRequest.setPaymentMenthod_id("20175b0e8fdd491292fcde60d1a45f41");
-                                    createOrderRequest.setAddress("city");
-                                    createOrderRequest.setTransactionId(transactionId);
-
-                                    String accessToken = getAccessToken();
-                                    ApiClient.getUserService().createOrder("Bearer " + accessToken, createOrderRequest).enqueue(new Callback<CreateOrderResponse>() {
-                                        @Override
-                                        public void onResponse(Call<CreateOrderResponse> call, Response<CreateOrderResponse> response) {
-                                            if (response.isSuccessful()) {
-                                                CreateOrderResponse createOrderResponse = response.body();
-                                                if (createOrderResponse != null && createOrderResponse.getStatusCode() == 200) {
-                                                    Toast.makeText(OrderActivity.this, "Order created successfully", Toast.LENGTH_SHORT).show();
-                                                } else {
-                                                    Toast.makeText(OrderActivity.this, "Failed to create order", Toast.LENGTH_SHORT).show();
-                                                }
-                                            } else {
-                                                Toast.makeText(OrderActivity.this, "Failed to create order", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onFailure(Call<CreateOrderResponse> call, Throwable t) {
-                                            Toast.makeText(OrderActivity.this, "An error occurred: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                }
+//                                Intent intent1 = new Intent(OrderActivity.this, PaymentNotification.class);
+//                                Log.d("GGGGGG", "Thanh toán thành công");
+//                                startActivity(intent1);
+                                createOrder(transactionId);
                             }
 
                             @Override
@@ -138,15 +121,50 @@ public class OrderActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-        }
+            }
         });
+
         fetchCartItems();
     }
+    private void createOrder(String transactionId) {
+        CreateOrderRequest createOrderRequest = new CreateOrderRequest();
+        createOrderRequest.setListIDCarts(listIDCarts);
+        createOrderRequest.setUser_id(getUserId());
+        createOrderRequest.setPaymentMenthod_id("20175b0e8fdd491292fcde60d1a45f41");
+        createOrderRequest.setAddress("city");
+        createOrderRequest.setTransactionId(transactionId);
+
+        String accessToken = getAccessToken();
+        ApiClient.getUserService().createOrder("Bearer " + accessToken, createOrderRequest).enqueue(new Callback<CreateOrderResponse>() {
+            @Override
+            public void onResponse(Call<CreateOrderResponse> call, Response<CreateOrderResponse> response) {
+                if (response.isSuccessful()) {
+                    CreateOrderResponse createOrderResponse = response.body();
+                    if (createOrderResponse != null && createOrderResponse.getStatusCode() == 200) {
+                        Toast.makeText(OrderActivity.this, "Order created successfully", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(OrderActivity.this, CartActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(OrderActivity.this, "Failed to create order", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(OrderActivity.this, "Failed to create order", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CreateOrderResponse> call, Throwable t) {
+                Toast.makeText(OrderActivity.this, "An error occurred: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         ZaloPaySDK.getInstance().onResult(intent);
     }
+
     private void fetchCartItems() {
         String accessToken = getAccessToken();
 
@@ -213,6 +231,7 @@ public class OrderActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         return sharedPreferences.getString("access_token", "");
     }
+
     private String getUserId() {
         SharedPreferences sharedPreferences = getSharedPreferences("uid", MODE_PRIVATE);
         return sharedPreferences.getString("user", "");

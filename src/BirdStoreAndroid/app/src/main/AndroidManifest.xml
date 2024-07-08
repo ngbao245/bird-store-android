@@ -20,7 +20,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="33">
         <activity
-            android:name=".Feature.ZaloPay.OrderPayment"
+            android:name=".Feature.Order.OrderActivity"
             android:exported="true"
             android:label="Merchant Demo"
             android:launchMode="singleTask">
@@ -44,9 +44,6 @@
         <activity
             android:name=".Activity.UserActivity"
             android:exported="false" />
-        <activity
-            android:name=".Activity.MainStoreActivity"
-            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -65,9 +62,6 @@
             android:exported="false" />
         <activity
             android:name=".Feature.Cart.CartActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Feature.Order.OrderActivity"
             android:exported="false" />
         <activity
             android:name=".Feature.GetProduct.ProductDetailActivity"
