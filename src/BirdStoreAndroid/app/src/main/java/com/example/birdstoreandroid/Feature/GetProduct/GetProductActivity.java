@@ -13,10 +13,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.birdstoreandroid.API.ApiClient;
+import com.example.birdstoreandroid.Activity.MainActivity;
 import com.example.birdstoreandroid.Activity.UserActivity;
 import com.example.birdstoreandroid.Feature.Cart.CartActivity;
 import com.example.birdstoreandroid.Feature.GetCategory.GetCategoryActivity;
 import com.example.birdstoreandroid.Feature.GetCategory.GetCategoryAdapter;
+import com.example.birdstoreandroid.Feature.GoogleMap.MapsActivity;
+import com.example.birdstoreandroid.Feature.Notification.CustomNotification;
 import com.example.birdstoreandroid.Model.GetCategoryRequest;
 import com.example.birdstoreandroid.Model.GetCategoryResponse;
 import com.example.birdstoreandroid.Model.GetProductRequest;
@@ -46,6 +49,8 @@ public class GetProductActivity extends AppCompatActivity implements GetProductA
 
     private SearchView searchView;
 
+    TextView delivery_address_input;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +58,12 @@ public class GetProductActivity extends AppCompatActivity implements GetProductA
         setContentView(R.layout.store_main_layout);
 
 //        listView = findViewById(R.id.lvGetProduct);
+
+        delivery_address_input = (TextView) findViewById(R.id.delivery_address_input);
+        if (delivery_address_input.getText().toString().trim().isEmpty()) {
+            Intent intent = new Intent(GetProductActivity.this, MapsActivity.class);
+            startActivity(intent);
+        }
 
         product_recycler_view = findViewById(R.id.product_recycler_view);
         category_recycler_view = findViewById(R.id.category_recycler_view);
