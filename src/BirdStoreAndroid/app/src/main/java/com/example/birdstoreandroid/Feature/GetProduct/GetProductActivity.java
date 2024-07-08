@@ -1,6 +1,7 @@
 package com.example.birdstoreandroid.Feature.GetProduct;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,13 +14,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.birdstoreandroid.API.ApiClient;
-import com.example.birdstoreandroid.Activity.MainActivity;
 import com.example.birdstoreandroid.Activity.UserActivity;
 import com.example.birdstoreandroid.Feature.Cart.CartActivity;
+
 import com.example.birdstoreandroid.Feature.GetCategory.GetCategoryActivity;
 import com.example.birdstoreandroid.Feature.GetCategory.GetCategoryAdapter;
 import com.example.birdstoreandroid.Feature.GoogleMap.MapsActivity;
-import com.example.birdstoreandroid.Feature.Notification.CustomNotification;
+
+import com.example.birdstoreandroid.Model.GetCartResponse;
 import com.example.birdstoreandroid.Model.GetCategoryRequest;
 import com.example.birdstoreandroid.Model.GetCategoryResponse;
 import com.example.birdstoreandroid.Model.GetProductRequest;
@@ -105,6 +107,8 @@ public class GetProductActivity extends AppCompatActivity implements GetProductA
 
         fetchCategories();
 
+        getAllCart();
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -173,6 +177,26 @@ public class GetProductActivity extends AppCompatActivity implements GetProductA
         });
     }
 
+    private void getAllCart() {
+        String accessToken = getAccessToken();
+
+        ApiClient.getUserService().getCart("Bearer " + accessToken).enqueue(new Callback<GetCartResponse>() {
+            @Override
+            public void onResponse(Call<GetCartResponse> call, Response<GetCartResponse> response) {
+                if (response.isSuccessful()) {
+                    // hien notification
+                } else {
+                    // Handle error
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetCartResponse> call, Throwable t) {
+                // Handle failure
+            }
+        });
+    }
+
     @Override
     public void onItemClick(GetProductRequest product) {
         String productId = product.getId();
@@ -180,5 +204,10 @@ public class GetProductActivity extends AppCompatActivity implements GetProductA
         Intent intent = new Intent(GetProductActivity.this, ProductDetailActivity.class);
         intent.putExtra("productId", productId);
         startActivity(intent);
+    }
+
+    private String getAccessToken() {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        return sharedPreferences.getString("access_token", "");
     }
 }
