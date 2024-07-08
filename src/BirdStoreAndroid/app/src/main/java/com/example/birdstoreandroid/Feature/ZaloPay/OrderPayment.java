@@ -8,11 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.birdstoreandroid.Feature.ZaloPay.Api.CreateOrder;
 import com.example.birdstoreandroid.R;
@@ -62,9 +58,11 @@ public class OrderPayment extends AppCompatActivity {
                         String token = data.getString("zp_trans_token");
                         ZaloPaySDK.getInstance().payOrder(OrderPayment.this, token, "demozpdk://app", new PayOrderListener() {
                             @Override
-                            public void onPaymentSucceeded(String s, String s1, String s2) {
+                            public void onPaymentSucceeded(String transactionId, String s1, String s2) {
+                                //change here
                                 Intent intent1 = new Intent(OrderPayment.this, PaymentNotification.class);
                                 intent1.putExtra("result", "Thanh toán thành công");
+                                intent1.putExtra("transactionId", transactionId);
                                 Log.d("GGGGGG", "Thanh toán thành công");
                                 startActivity(intent1);
                             }

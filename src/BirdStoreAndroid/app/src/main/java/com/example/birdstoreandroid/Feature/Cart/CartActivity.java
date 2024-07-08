@@ -1,5 +1,6 @@
 package com.example.birdstoreandroid.Feature.Cart;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.birdstoreandroid.API.ApiClient;
+import com.example.birdstoreandroid.Feature.Order.OrderActivity;
 import com.example.birdstoreandroid.Model.CreateOrderRequest;
 import com.example.birdstoreandroid.Model.CreateOrderResponse;
 import com.example.birdstoreandroid.Model.GetCartResponse;
@@ -60,34 +62,37 @@ public class CartActivity extends AppCompatActivity {
         checkoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CreateOrderRequest createOrderRequest = new CreateOrderRequest();
-                createOrderRequest.setListIDCarts(listIDCarts);
-                createOrderRequest.setUser_id(userId);
-                createOrderRequest.setPaymentMenthod_id("20175b0e8fdd491292fcde60d1a45f41");
-                createOrderRequest.setAddress("city");
-                createOrderRequest.setTransactionId("city");
+//                CreateOrderRequest createOrderRequest = new CreateOrderRequest();
+//                createOrderRequest.setListIDCarts(listIDCarts);
+//                createOrderRequest.setUser_id(userId);
+//                createOrderRequest.setPaymentMenthod_id("20175b0e8fdd491292fcde60d1a45f41");
+//                createOrderRequest.setAddress("city");
+//                createOrderRequest.setTransactionId("city");
+//
+//                String accessToken = getAccessToken();
+//                ApiClient.getUserService().createOrder("Bearer " + accessToken, createOrderRequest).enqueue(new Callback<CreateOrderResponse>() {
+//                    @Override
+//                    public void onResponse(Call<CreateOrderResponse> call, Response<CreateOrderResponse> response) {
+//                        if (response.isSuccessful()) {
+//                            CreateOrderResponse createOrderResponse = response.body();
+//                            if (createOrderResponse != null && createOrderResponse.getStatusCode() == 200) {
+//                                Toast.makeText(CartActivity.this, "Order created successfully", Toast.LENGTH_SHORT).show();
+//                            } else {
+//                                Toast.makeText(CartActivity.this, "Failed to create order", Toast.LENGTH_SHORT).show();
+//                            }
+//                        } else {
+//                            Toast.makeText(CartActivity.this, "Failed to create order", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<CreateOrderResponse> call, Throwable t) {
+//                        Toast.makeText(CartActivity.this, "An error occurred: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+//                    }
+//                });
 
-                String accessToken = getAccessToken();
-                ApiClient.getUserService().createOrder("Bearer " + accessToken, createOrderRequest).enqueue(new Callback<CreateOrderResponse>() {
-                    @Override
-                    public void onResponse(Call<CreateOrderResponse> call, Response<CreateOrderResponse> response) {
-                        if (response.isSuccessful()) {
-                            CreateOrderResponse createOrderResponse = response.body();
-                            if (createOrderResponse != null && createOrderResponse.getStatusCode() == 200) {
-                                Toast.makeText(CartActivity.this, "Order created successfully", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(CartActivity.this, "Failed to create order", Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            Toast.makeText(CartActivity.this, "Failed to create order", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<CreateOrderResponse> call, Throwable t) {
-                        Toast.makeText(CartActivity.this, "An error occurred: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                Intent intent = new Intent(CartActivity.this, OrderActivity.class);
+                startActivity(intent);
             }
         });
         fetchCartItems();

@@ -22,6 +22,7 @@ public class PaymentNotification extends AppCompatActivity {
         TextView txtNotification = findViewById(R.id.textViewNotify);
 
         Intent intent = getIntent();
-        txtNotification.setText(intent.getStringExtra("result"));
+        String transId = intent.getStringExtra("transactionId");
+        txtNotification.setText(intent.getStringExtra("result") + transId);
     }
 }
