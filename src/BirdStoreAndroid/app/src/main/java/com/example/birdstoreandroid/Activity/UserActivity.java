@@ -1,6 +1,7 @@
 package com.example.birdstoreandroid.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -51,7 +52,7 @@ public class UserActivity extends AppCompatActivity {
     }
 
     private void fetchUserDetails() {
-        userId = "5967ac6a0b244a789723e3cd2afac864";
+        userId = getUserId();
         ApiClient.getUserService().getSingleUser(userId).enqueue(new Callback<GetSingleUserResponse>() {
             @Override
             public void onResponse(Call<GetSingleUserResponse> call, Response<GetSingleUserResponse> response) {
@@ -85,5 +86,10 @@ public class UserActivity extends AppCompatActivity {
         tv_userEmail.setText(userDetail.getUserEmail());
         tv_userPhone.setText(userDetail.getUserPhone());
         tv_addressLine.setText(userDetail.getAddressLine());
+    }
+
+    private String getUserId() {
+        SharedPreferences sharedPreferences = getSharedPreferences("uid", MODE_PRIVATE);
+        return sharedPreferences.getString("user", "");
     }
 }

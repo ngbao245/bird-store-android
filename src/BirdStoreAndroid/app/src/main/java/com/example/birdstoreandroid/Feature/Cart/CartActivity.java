@@ -92,6 +92,7 @@ public class CartActivity extends AppCompatActivity {
         });
         fetchCartItems();
     }
+
     private void fetchCartItems() {
         String accessToken = getAccessToken();
 
@@ -150,6 +151,7 @@ public class CartActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         return sharedPreferences.getString("access_token", "");
     }
+
     private String getUserId() {
         SharedPreferences sharedPreferences = getSharedPreferences("uid", MODE_PRIVATE);
         return sharedPreferences.getString("user", "");
