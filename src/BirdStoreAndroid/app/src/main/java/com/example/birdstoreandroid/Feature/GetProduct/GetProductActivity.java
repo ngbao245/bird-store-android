@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,6 +44,8 @@ public class GetProductActivity extends AppCompatActivity implements GetProductA
 
     private FloatingActionButton cart_button;
 
+    private SearchView searchView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +58,8 @@ public class GetProductActivity extends AppCompatActivity implements GetProductA
         category_recycler_view = findViewById(R.id.category_recycler_view);
 
         cart_button = findViewById(R.id.cart_button);
+
+        searchView = (SearchView) findViewById(R.id.search_view);
 
         product_recycler_view.setLayoutManager(new LinearLayoutManager(this));
         category_recycler_view.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -88,6 +93,21 @@ public class GetProductActivity extends AppCompatActivity implements GetProductA
         fetchProducts();
 
         fetchCategories();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false; // No action on text submit
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (productAdapter != null) {
+                    productAdapter.filter(newText);
+                }
+                return true;
+            }
+        });
 
 //        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override

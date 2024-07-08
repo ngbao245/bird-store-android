@@ -14,8 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.birdstoreandroid.Model.GetProductRequest;
 import com.example.birdstoreandroid.R;
+import com.example.birdstoreandroid.TextUtils;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GetProductAdapter extends RecyclerView.Adapter<GetProductAdapter.ViewHolder> {
@@ -24,10 +26,14 @@ public class GetProductAdapter extends RecyclerView.Adapter<GetProductAdapter.Vi
     private List<GetProductRequest> products;
     private OnItemClickListener onItemClickListener;
 
+    private List<GetProductRequest> productsFull;
+
     public GetProductAdapter(Context context, List<GetProductRequest> products, OnItemClickListener onItemClickListener) {
         this.context = context;
         this.products = products;
         this.onItemClickListener = onItemClickListener;
+
+        this.productsFull = new ArrayList<>(products);
     }
 
     @NonNull
@@ -50,6 +56,21 @@ public class GetProductAdapter extends RecyclerView.Adapter<GetProductAdapter.Vi
     @Override
     public int getItemCount() {
         return products.size();
+    }
+
+    public void filter(String text) {
+        products.clear();
+        if (text.isEmpty()) {
+            products.addAll(productsFull);
+        } else {
+            text = TextUtils.normalize(text.toLowerCase());
+            for (GetProductRequest item : productsFull) {
+                if (TextUtils.normalize(item.getName().toLowerCase()).contains(text)) {
+                    products.add(item);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
