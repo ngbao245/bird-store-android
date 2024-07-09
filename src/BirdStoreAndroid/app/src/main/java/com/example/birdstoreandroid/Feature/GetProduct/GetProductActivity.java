@@ -24,6 +24,7 @@ import com.example.birdstoreandroid.Feature.GetCategory.GetCategoryActivity;
 import com.example.birdstoreandroid.Feature.GetCategory.GetCategoryAdapter;
 import com.example.birdstoreandroid.Feature.GoogleMap.MapsActivity;
 import com.example.birdstoreandroid.Feature.Notification.NotificationHelper;
+import com.example.birdstoreandroid.Feature.Notification.PermissionHelper;
 import com.example.birdstoreandroid.Model.GetCartResponse;
 import com.example.birdstoreandroid.Model.GetCategoryRequest;
 import com.example.birdstoreandroid.Model.GetCategoryResponse;
@@ -60,6 +61,12 @@ public class GetProductActivity extends AppCompatActivity implements GetProductA
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.store_main_layout);
+
+        // Request permission for notifications
+        PermissionHelper.requestPermission(this);
+
+        // Create notification channels
+        NotificationHelper.createNotificationChannels(this);
 
         delivery_address_input = findViewById(R.id.delivery_address_input);
         location_icon = findViewById(R.id.location_icon);

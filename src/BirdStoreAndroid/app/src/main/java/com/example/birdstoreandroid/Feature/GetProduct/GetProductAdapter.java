@@ -48,7 +48,7 @@ public class GetProductAdapter extends RecyclerView.Adapter<GetProductAdapter.Vi
         GetProductRequest product = products.get(position);
         Picasso.get().load(product.getImage()).into(holder.imageView);
         holder.textViewName.setText(product.getName());
-        holder.textViewPrice.setText(String.format("Price: %d", product.getPrice()));
+        holder.textViewPrice.setText(String.format("Price: %d vnđ", product.getPrice()));
 
         holder.itemView.setOnClickListener(v -> onItemClickListener.onItemClick(product));
     }
