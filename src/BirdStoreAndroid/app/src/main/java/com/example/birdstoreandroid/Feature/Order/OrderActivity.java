@@ -16,13 +16,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.birdstoreandroid.API.ApiClient;
-import com.example.birdstoreandroid.Activity.MainActivity;
+import com.example.birdstoreandroid.Activity.UserActivity;
 import com.example.birdstoreandroid.Feature.Cart.CartActivity;
 import com.example.birdstoreandroid.Feature.Cart.CartItem;
 import com.example.birdstoreandroid.Feature.GetProduct.GetProductActivity;
 import com.example.birdstoreandroid.Feature.ZaloPay.Api.CreateOrder;
-import com.example.birdstoreandroid.Feature.ZaloPay.OrderPayment;
-import com.example.birdstoreandroid.Feature.ZaloPay.PaymentNotification;
 import com.example.birdstoreandroid.Model.CreateOrderRequest;
 import com.example.birdstoreandroid.Model.CreateOrderResponse;
 import com.example.birdstoreandroid.Model.GetCartResponse;
@@ -52,6 +50,12 @@ public class OrderActivity extends AppCompatActivity {
     private AppCompatButton checkoutBtn;
     private ArrayList<String> listIDCarts = new ArrayList<>();
 
+    private TextView TvLocation, TvDistance;
+
+    private TextView categories_listall_label;
+
+    private double totalZalo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,30 +68,25 @@ public class OrderActivity extends AppCompatActivity {
         taxTxt = findViewById(R.id.textViewTax);
         totalTxt = findViewById(R.id.textViewTotal);
         checkoutBtn = findViewById(R.id.buttonCheckout);
+        categories_listall_label = findViewById(R.id.categories_listall_label);
 
-        StrictMode.ThreadPolicy policy = new
-                StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
         ZaloPaySDK.init(2553, Environment.SANDBOX);
 
-        Intent intent = getIntent();
-
-        //double total = Double.parseDouble(totalTxt.getText().toString().replace(" VNĐ", ""));
-        double total = 10000;
-        String totalString = String.format("%.0f", total);
+        fetchLocationAndDistance();
 
         orderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         orderAdapter = new OrderAdapter(orderItems);
         orderRecyclerView.setAdapter(orderAdapter);
-
-        String userId = getUserId();
 
         checkoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CreateOrder orderApi = new CreateOrder();
                 try {
+                    String totalString = String.format("%.0f", totalZalo);
                     JSONObject data = orderApi.createOrder(totalString);
                     String code = data.getString("return_code");
                     if (code.equals("1")) {
@@ -95,9 +94,9 @@ public class OrderActivity extends AppCompatActivity {
                         ZaloPaySDK.getInstance().payOrder(OrderActivity.this, token, "demozpdk://app", new PayOrderListener() {
                             @Override
                             public void onPaymentSucceeded(String transactionId, String s1, String s2) {
-//                                Intent intent1 = new Intent(OrderActivity.this, PaymentNotification.class);
-//                                Log.d("GGGGGG", "Thanh toán thành công");
-//                                startActivity(intent1);
+                                Intent intent1 = new Intent(OrderActivity.this, UserActivity.class);
+                                intent1.putExtra("result", "Thanh toán thành công");
+                                startActivity(intent1);
                                 createOrder(transactionId);
                             }
 
@@ -105,7 +104,7 @@ public class OrderActivity extends AppCompatActivity {
                             public void onPaymentCanceled(String s, String s1) {
                                 Intent intent1 = new Intent(OrderActivity.this, CartActivity.class);
                                 intent1.putExtra("result", "Hủy thanh toán");
-                                Log.d("GGGGGG", "Hủy thanh toán");
+                                Log.d("PaymentStatus", "Hủy thanh toán");
                                 startActivity(intent1);
                             }
 
@@ -113,7 +112,7 @@ public class OrderActivity extends AppCompatActivity {
                             public void onPaymentError(ZaloPayError zaloPayError, String s, String s1) {
                                 Intent intent1 = new Intent(OrderActivity.this, CartActivity.class);
                                 intent1.putExtra("result", "Lỗi thanh toán");
-                                Log.d("GGGGGG", "Lỗi thanh toán");
+                                Log.d("PaymentStatus", "Lỗi thanh toán");
                                 startActivity(intent1);
                             }
                         });
@@ -127,6 +126,7 @@ public class OrderActivity extends AppCompatActivity {
 
         fetchCartItems();
     }
+
     private void createOrder(String transactionId) {
         CreateOrderRequest createOrderRequest = new CreateOrderRequest();
         createOrderRequest.setListIDCarts(listIDCarts);
@@ -187,50 +187,104 @@ public class OrderActivity extends AppCompatActivity {
 
                         for (CartItem cartItem : orderItems) {
                             String cartItemId = cartItem.getId();
-                            // Do something with the cartItemId, e.g., add it to a list or perform some operation
                             listIDCarts.add(cartItemId);
                         }
 
-                        updateOrderSummary();
+                        totalZalo = updateOrderSummary();
                     } else {
-                        // Handle error
                         Toast.makeText(OrderActivity.this, "Failed to fetch cart items", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    // Handle error
                     Toast.makeText(OrderActivity.this, "Failed to fetch cart items", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<GetCartResponse> call, Throwable t) {
-                // Handle failure
                 Toast.makeText(OrderActivity.this, "An error occurred: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void updateOrderSummary() {
-        float subTotal = 0;
-        float total = 0;
-        float deliveryFee = 1;
-        float taxFee = 1;
-
-        for (CartItem orderItem : orderItems) {
-            subTotal += orderItem.getProduct().getPrice();
+    private double updateOrderSummary() {
+        double subTotal = 0;
+        for (CartItem cartItem : orderItems) {
+            subTotal += cartItem.getPrice();
         }
 
-        total = subTotal + deliveryFee + taxFee;
+        // Hardcoded delivery and tax for demo purposes
+        double delivery = calculateDeliveryFee();
+        double tax = 0.02 * subTotal; // Calculate tax based on subtotal
 
-        subTotalTxt.setText(String.valueOf(subTotal));
-        deliveryTxt.setText(String.valueOf(deliveryFee));
-        taxTxt.setText(String.valueOf(taxFee));
-        totalTxt.setText(String.valueOf(total));
+        double total = subTotal + delivery + tax;
+
+        subTotalTxt.setText(String.format("%.0f vnđ", subTotal));
+        deliveryTxt.setText(String.format("%.0f vnđ", delivery));
+        taxTxt.setText(String.format("%.0f vnđ (2%% VAT)", tax));
+        totalTxt.setText(String.format("%.0f vnđ", total));
+
+        return total;
+    }
+
+    private double calculateDeliveryFee() {
+        SharedPreferences sharedPreferences = getSharedPreferences("location_distance", MODE_PRIVATE);
+        float userDistance = sharedPreferences.getFloat("userDistance", 0);
+
+        double deliveryFee = 0;
+
+        if (userDistance < 2) {
+            deliveryFee = 25000;
+        } else if (userDistance >= 2 && userDistance < 5) {
+            deliveryFee = 30000;
+        } else if (userDistance >= 5 && userDistance < 10) {
+            deliveryFee = 35000;
+        } else {
+            deliveryFee = 4000 * userDistance;
+        }
+
+        return deliveryFee;
     }
 
     private String getAccessToken() {
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         return sharedPreferences.getString("access_token", "");
+    }
+
+    private void fetchLocationAndDistance() {
+        SharedPreferences sharedPreferences = getSharedPreferences("location_distance", MODE_PRIVATE);
+        String userLocation = sharedPreferences.getString("userLocation", "No location found");
+        float userDistance = sharedPreferences.getFloat("userDistance", 0);
+
+        TvLocation = findViewById(R.id.textViewLocationTitle);
+        TvDistance = findViewById(R.id.textViewDistanceTime);
+
+        TvLocation.setText(userLocation);
+
+        String formattedDistance;
+        String time;
+
+        if (userDistance < 1) {
+            formattedDistance = String.format("%.2f", userDistance * 1000) + " m";
+            time = calculateTime(userDistance / 20); // Convert km to hours
+        } else {
+            formattedDistance = String.format("%.2f", userDistance) + " km";
+            time = calculateTime(userDistance / 20); // Convert km to hours
+        }
+
+        String distanceTimeResult = formattedDistance + " - " + time;
+        TvDistance.setText(distanceTimeResult);
+    }
+
+    private String calculateTime(float distance) {
+        int hours = (int) Math.floor(distance);
+        float remainingDistance = distance - hours;
+        int minutes = (int) (remainingDistance * 60);
+
+        if (hours < 1) {
+            return minutes + " minutes";
+        } else {
+            return hours + " hours";
+        }
     }
 
     private String getUserId() {

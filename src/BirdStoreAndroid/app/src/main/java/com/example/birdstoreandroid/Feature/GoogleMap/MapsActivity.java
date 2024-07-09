@@ -6,30 +6,29 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.birdstoreandroid.Feature.GetProduct.GetProductActivity;
 import com.example.birdstoreandroid.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.birdstoreandroid.databinding.ActivityMapsBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
 import java.util.List;
@@ -39,21 +38,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
 
+    public static final int LOCATION_PERMISSION_CODE = 100;
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private double currentLat, currentLong;
 
-    public static int LOCATION_PERMISSION_CODE = 100;
-    FusedLocationProviderClient fusedLocationProviderClient;
-    double currentLat, currentLong;
-
-    SearchView search_bar;
-
-    LatLng getDestination;
-    Marker destinationMarker;
-
-    LatLng destinationLatLng;
-    Button btnCalculate;
-    TextView txtDistance;
-    LatLng userLocation;
-
+    private SearchView searchBar;
+    private LatLng destination;
+    private Button btnCalculate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,53 +53,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
 
-        btnCalculate = findViewById(R.id.btnCalculation);
-        btnCalculate.setOnClickListener(view -> calculateDistanceToDestination());
-
-        txtDistance = findViewById(R.id.txtDistance);
+        initializeViews();
+        setUpListeners();
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        getUserPermission();
+        requestUserPermission();
+    }
 
+    private void initializeViews() {
+        btnCalculate = findViewById(R.id.btnCalculation);
+        searchBar = findViewById(R.id.search_bar);
+    }
 
-        search_bar = (SearchView) findViewById(R.id.search_bar);
-        search_bar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+    private void setUpListeners() {
+        btnCalculate.setOnClickListener(view -> {
+            if (destination != null) {
+                fetchAndReturnAddress();
+            } else {
+                showToast("No location selected");
+            }
+        });
+
+        searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                String getLocationInput = search_bar.getQuery().toString();
-
-                if (getLocationInput == null) {
-                    Toast.makeText(MapsActivity.this, "Location not found!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Geocoder geocoder = new Geocoder(MapsActivity.this);
-
-                    try {
-                        List<Address> addressList = geocoder.getFromLocationName(getLocationInput, 1);
-
-                        if (addressList.size() > 0) {
-                            getDestination = new LatLng(addressList.get(0).getLatitude(), addressList.get(0).getLongitude());
-
-                            if (destinationMarker != null) {
-                                destinationMarker.remove();
-                            }
-
-                            mMap.clear();
-                            mMap.addMarker(new MarkerOptions().position(getDestination).title(getLocationInput));
-                            MarkerOptions markerOptions = new MarkerOptions().position(getDestination).title(getLocationInput);
-                            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(getDestination, 10);
-                            mMap.animateCamera(cameraUpdate);
-                            destinationMarker = mMap.addMarker(markerOptions);
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+                searchLocation(query);
                 return false;
             }
 
@@ -119,92 +94,87 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-
-    private void calculateDistanceToDestination() {
-        String destination = search_bar.getQuery().toString();
-
-        destinationLatLng = getDestinationAddress(destination);
-        if (destinationLatLng != null) {
-            float distance = calculateDistance(userLocation, getDestination);
-            if ((distance / 1000) < 1) {
-                String formattedDistance = String.format("%.2f", distance);
-                txtDistance.setText(formattedDistance + " meters");
-            } else {
-                String formattedDistance = String.format("%.2f", distance / 1000);
-                txtDistance.setText(formattedDistance + " kilometers");
-            }
-        } else {
-            Toast.makeText(MapsActivity.this, " Cannot define address", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private LatLng getDestinationAddress(String destinationAddress) {
-        Geocoder geocoder = new Geocoder(MapsActivity.this);
-        List<Address> addressList;
-
+    private void fetchAndReturnAddress() {
+        Geocoder geocoder = new Geocoder(this);
         try {
-            addressList = geocoder.getFromLocationName(destinationAddress, 5);
-            if (addressList == null) {
-                return null;
+            List<Address> addresses = geocoder.getFromLocation(destination.latitude, destination.longitude, 1);
+            if (addresses != null && !addresses.isEmpty()) {
+                Address address = addresses.get(0);
+                String addressDetails = address.getAddressLine(0);
+
+                // Calculate the distance
+                float[] results = new float[1];
+                Location.distanceBetween(currentLat, currentLong, destination.latitude, destination.longitude, results);
+                float distanceInKm = results[0] / 1000;
+
+                // Store in SharedPreferences
+                SharedPreferences sharedPreferences = getSharedPreferences("location_distance", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("userLocation", addressDetails);
+                editor.putFloat("userDistance", distanceInKm);
+                editor.apply();
+
+                Intent intent = new Intent();
+                intent.putExtra("address", addressDetails);
+                setResult(RESULT_OK, intent);
+                finish();
+            } else {
+                showToast("Unable to get address details");
             }
-            Address location = addressList.get(0);
-            return new LatLng(location.getLatitude(), location.getLongitude());
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            showToast("Geocoder service failed");
         }
     }
 
-    private float calculateDistance(LatLng start, LatLng end) {
-        if (start == null || end == null) {
-            throw new IllegalArgumentException("Start and end locations must not be null");
+    private void searchLocation(String locationName) {
+        Geocoder geocoder = new Geocoder(this);
+        try {
+            List<Address> addressList = geocoder.getFromLocationName(locationName, 1);
+            if (!addressList.isEmpty()) {
+                Address address = addressList.get(0);
+                destination = new LatLng(address.getLatitude(), address.getLongitude());
+                updateMapWithMarker(destination, locationName);
+            } else {
+                showToast("Location not found!");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            showToast("Error finding location");
         }
-
-        Location startLocation = new Location("");
-        startLocation.setLatitude(start.latitude);
-        startLocation.setLongitude(start.longitude);
-
-        Location endLocation = new Location("");
-        endLocation.setLatitude(end.latitude);
-        endLocation.setLongitude(end.longitude);
-        return startLocation.distanceTo(endLocation);
     }
 
+    private void updateMapWithMarker(LatLng latLng, String title) {
+        if (mMap != null) {
+            mMap.clear();
+            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(title)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+            mMap.addMarker(markerOptions);
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+        }
+    }
 
-    private void getUserPermission() {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            // return location getUserLocation() if the permissionResult is granted.
-            getUserLocation();
+    private void requestUserPermission() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
         } else {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
+            fetchUserLocation();
         }
     }
 
-    private void getUserLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+    private void fetchUserLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
 
-        Task<Location> task = fusedLocationProviderClient.getLastLocation();
-
-        task.addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
+        fusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
+            if (location != null) {
                 currentLat = location.getLatitude();
                 currentLong = location.getLongitude();
-
-                userLocation = new LatLng(currentLat, currentLong);
-
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(userLocation, 100);
-                mMap.animateCamera(cameraUpdate);
-
-                MarkerOptions markerOptions = new MarkerOptions().position(userLocation).title("Your current location");
-                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
-                mMap.addMarker(markerOptions);
+                LatLng userLocation = new LatLng(currentLat, currentLong);
+                updateMapWithMarker(userLocation, "Your current location");
             }
         });
     }
@@ -213,23 +183,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LOCATION_PERMISSION_CODE) {
-            Toast.makeText(this, "Permission granted!", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Location Permission has been denied, please allow permission to access location", Toast.LENGTH_SHORT).show();
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                showToast("Permission granted!");
+                fetchUserLocation();
+            } else {
+                showToast("Location permission denied, please allow permission to access location");
+            }
         }
     }
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
-
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-
         googleMap.setMyLocationEnabled(true);
-
         googleMap.getUiSettings().setZoomControlsEnabled(true);
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

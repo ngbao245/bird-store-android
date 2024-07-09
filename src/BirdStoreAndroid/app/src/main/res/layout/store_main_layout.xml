@@ -93,8 +93,9 @@
                 <EditText
                     android:id="@+id/delivery_address_input"
                     android:layout_width="0dp"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:clickable="false"
                     android:hint="Nhập địa chỉ của bạn"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"

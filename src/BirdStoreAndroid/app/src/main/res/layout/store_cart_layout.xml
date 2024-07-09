@@ -85,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:text="Tổng:"
+                android:text="Tổng (tạm tính):"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"

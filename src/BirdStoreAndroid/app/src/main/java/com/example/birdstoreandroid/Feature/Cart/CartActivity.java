@@ -150,7 +150,7 @@ public class CartActivity extends AppCompatActivity {
             total += cartItem.getProduct().getPrice();
         }
 
-        totalTxt.setText(String.valueOf(total));
+        totalTxt.setText(String.format("%.0f vnđ", total));
     }
 
     private String getAccessToken() {
