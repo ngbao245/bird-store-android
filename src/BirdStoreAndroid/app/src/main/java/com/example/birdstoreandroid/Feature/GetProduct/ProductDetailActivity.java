@@ -1,5 +1,6 @@
 package com.example.birdstoreandroid.Feature.GetProduct;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -104,9 +105,12 @@ public class ProductDetailActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null && response.body().getStatusCode() == 200) {
                     AddToCartResponse.CartItem cartItem = response.body().getData();
                     Toast.makeText(ProductDetailActivity.this, "Item added to cart", Toast.LENGTH_SHORT).show();
-                    // Optionally, you can update the UI or perform any other actions after adding the item to the cart
+                    Intent intent = new Intent(ProductDetailActivity.this, GetProductActivity.class);
+                    startActivity(intent);
                 } else {
-                    Toast.makeText(ProductDetailActivity.this, "Failed to add item to cart", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProductDetailActivity.this, "Item already added to cart", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(ProductDetailActivity.this, GetProductActivity.class);
+                    startActivity(intent);
                 }
             }
 

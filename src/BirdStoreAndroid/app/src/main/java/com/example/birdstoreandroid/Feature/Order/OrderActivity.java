@@ -1,17 +1,22 @@
 package com.example.birdstoreandroid.Feature.Order;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +25,7 @@ import com.example.birdstoreandroid.Activity.UserActivity;
 import com.example.birdstoreandroid.Feature.Cart.CartActivity;
 import com.example.birdstoreandroid.Feature.Cart.CartItem;
 import com.example.birdstoreandroid.Feature.GetProduct.GetProductActivity;
+import com.example.birdstoreandroid.Feature.Notification.NotificationHelper;
 import com.example.birdstoreandroid.Feature.ZaloPay.Api.CreateOrder;
 import com.example.birdstoreandroid.Model.CreateOrderRequest;
 import com.example.birdstoreandroid.Model.CreateOrderResponse;
@@ -28,7 +34,9 @@ import com.example.birdstoreandroid.R;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -69,6 +77,9 @@ public class OrderActivity extends AppCompatActivity {
         totalTxt = findViewById(R.id.textViewTotal);
         checkoutBtn = findViewById(R.id.buttonCheckout);
         categories_listall_label = findViewById(R.id.categories_listall_label);
+
+        ImageView btnBack = findViewById(R.id.back_button);
+        btnBack.setOnClickListener(v -> finish());
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -153,7 +164,13 @@ public class OrderActivity extends AppCompatActivity {
                     CreateOrderResponse createOrderResponse = response.body();
                     if (createOrderResponse != null && createOrderResponse.getStatusCode() == 200) {
                         Toast.makeText(OrderActivity.this, "Order created successfully", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(OrderActivity.this, GetProductActivity.class);
+
+                        sendCustomNotification(
+                                "Order Success",
+                                "Your order has been placed",
+                                "Thank you for shopping with us. Your order is on its way!");
+
+                        Intent intent = new Intent(OrderActivity.this, UserActivity.class);
                         startActivity(intent);
                     } else {
                         Toast.makeText(OrderActivity.this, "Failed to create order", Toast.LENGTH_SHORT).show();
@@ -304,5 +321,35 @@ public class OrderActivity extends AppCompatActivity {
     private String getUserId() {
         SharedPreferences sharedPreferences = getSharedPreferences("uid", MODE_PRIVATE);
         return sharedPreferences.getString("user", "");
+    }
+
+    @SuppressLint("MissingPermission")
+    private void sendCustomNotification(String smallTitle, String largeTitle, String largeMessage) {
+        // Create RemoteViews for custom notification layout
+        RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.small_notification_layout);
+        notificationLayout.setTextViewText(R.id.notification_title_small, smallTitle);
+
+        RemoteViews notificationLayoutExpanded = new RemoteViews(getPackageName(), R.layout.large_notification_layout);
+        notificationLayoutExpanded.setTextViewText(R.id.notification_title_large, largeTitle);
+        notificationLayoutExpanded.setTextViewText(R.id.notification_body_large, largeMessage);
+
+        // Add timestamp to the custom notification
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        String strDate = sdf.format(new Date());
+        notificationLayout.setTextViewText(R.id.tv_time_custom_notification, strDate);
+
+        // Build and display the custom notification
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NotificationHelper.CHANNEL_ID_2)
+                .setSmallIcon(R.drawable.ic_bird_small_icon)
+                .setCustomContentView(notificationLayout)
+                .setCustomBigContentView(notificationLayoutExpanded)
+                .setColor(getResources().getColor(R.color.orange));
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(getNotificationId(), builder.build());
+    }
+
+    private int getNotificationId() {
+        return (int) System.currentTimeMillis();
     }
 }
