@@ -48,6 +48,7 @@ public class CartActivity extends AppCompatActivity {
         cartRecyclerView = findViewById(R.id.recyclerViewCart);
         totalTxt = findViewById(R.id.textViewTotalPrice);
         checkoutBtn = findViewById(R.id.buttonCheckout);
+        updateCheckoutButtonState();
 
         cartRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         cartAdapter = new CartAdapter(cartItems);
@@ -56,42 +57,11 @@ public class CartActivity extends AppCompatActivity {
         ImageView btnBack = findViewById(R.id.back_button);
         btnBack.setOnClickListener(v -> finish());
 
-        //data create order
-        //listIDCarts.add("2147ca2e26d74261a2c518b636a780b6");
         String userId = getUserId();
 
         checkoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                CreateOrderRequest createOrderRequest = new CreateOrderRequest();
-//                createOrderRequest.setListIDCarts(listIDCarts);
-//                createOrderRequest.setUser_id(userId);
-//                createOrderRequest.setPaymentMenthod_id("20175b0e8fdd491292fcde60d1a45f41");
-//                createOrderRequest.setAddress("city");
-//                createOrderRequest.setTransactionId("city");
-//
-//                String accessToken = getAccessToken();
-//                ApiClient.getUserService().createOrder("Bearer " + accessToken, createOrderRequest).enqueue(new Callback<CreateOrderResponse>() {
-//                    @Override
-//                    public void onResponse(Call<CreateOrderResponse> call, Response<CreateOrderResponse> response) {
-//                        if (response.isSuccessful()) {
-//                            CreateOrderResponse createOrderResponse = response.body();
-//                            if (createOrderResponse != null && createOrderResponse.getStatusCode() == 200) {
-//                                Toast.makeText(CartActivity.this, "Order created successfully", Toast.LENGTH_SHORT).show();
-//                            } else {
-//                                Toast.makeText(CartActivity.this, "Failed to create order", Toast.LENGTH_SHORT).show();
-//                            }
-//                        } else {
-//                            Toast.makeText(CartActivity.this, "Failed to create order", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<CreateOrderResponse> call, Throwable t) {
-//                        Toast.makeText(CartActivity.this, "An error occurred: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-
                 Intent intent = new Intent(CartActivity.this, OrderActivity.class);
                 startActivity(intent);
             }
@@ -125,6 +95,7 @@ public class CartActivity extends AppCompatActivity {
                         }
 
                         updateCartSummary();
+                        updateCheckoutButtonState();
                     } else {
                         // Handle error
                         Toast.makeText(CartActivity.this, "Failed to fetch cart items", Toast.LENGTH_SHORT).show();
@@ -133,12 +104,14 @@ public class CartActivity extends AppCompatActivity {
                     // Handle error
                     Toast.makeText(CartActivity.this, "Failed to fetch cart items", Toast.LENGTH_SHORT).show();
                 }
+                updateCheckoutButtonState();
             }
 
             @Override
             public void onFailure(Call<GetCartResponse> call, Throwable t) {
                 // Handle failure
                 Toast.makeText(CartActivity.this, "An error occurred: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                updateCheckoutButtonState();
             }
         });
     }
@@ -151,6 +124,10 @@ public class CartActivity extends AppCompatActivity {
         }
 
         totalTxt.setText(String.format("%.0f vnđ", total));
+    }
+    private void updateCheckoutButtonState() {
+        checkoutBtn.setEnabled(!cartItems.isEmpty());
+        checkoutBtn.setAlpha(cartItems.isEmpty() ? 0.5f : 1.0f);
     }
 
     private String getAccessToken() {
