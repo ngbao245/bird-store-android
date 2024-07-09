@@ -81,6 +81,15 @@ public class OrderActivity extends AppCompatActivity {
         orderAdapter = new OrderAdapter(orderItems);
         orderRecyclerView.setAdapter(orderAdapter);
 
+        categories_listall_label.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(OrderActivity.this, GetProductActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
         checkoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,6 +107,7 @@ public class OrderActivity extends AppCompatActivity {
                                 intent1.putExtra("result", "Thanh toán thành công");
                                 startActivity(intent1);
                                 createOrder(transactionId);
+                                finish();
                             }
 
                             @Override
@@ -208,8 +218,12 @@ public class OrderActivity extends AppCompatActivity {
 
     private double updateOrderSummary() {
         double subTotal = 0;
-        for (CartItem cartItem : orderItems) {
-            subTotal += cartItem.getPrice();
+        if (orderItems != null && !orderItems.isEmpty()) {
+            for (CartItem cartItem : orderItems) {
+                subTotal += cartItem.getProduct().getPrice();
+            }
+        } else {
+            Toast.makeText(OrderActivity.this, "No items in the cart", Toast.LENGTH_SHORT).show();
         }
 
         // Hardcoded delivery and tax for demo purposes
@@ -220,7 +234,7 @@ public class OrderActivity extends AppCompatActivity {
 
         subTotalTxt.setText(String.format("%.0f vnđ", subTotal));
         deliveryTxt.setText(String.format("%.0f vnđ", delivery));
-        taxTxt.setText(String.format("%.0f vnđ (2%% VAT)", tax));
+        taxTxt.setText("2%");
         totalTxt.setText(String.format("%.0f vnđ", total));
 
         return total;
