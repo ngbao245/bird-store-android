@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.birdstoreandroid.API.ApiClient;
 import com.example.birdstoreandroid.Activity.UserActivity;
 import com.example.birdstoreandroid.Feature.Cart.CartActivity;
+import com.example.birdstoreandroid.Feature.Cart.CartItem;
 import com.example.birdstoreandroid.Feature.GetCategory.GetCategoryActivity;
 import com.example.birdstoreandroid.Feature.GetCategory.GetCategoryAdapter;
 import com.example.birdstoreandroid.Feature.GoogleMap.MapsActivity;
@@ -34,6 +35,7 @@ import com.example.birdstoreandroid.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -204,13 +206,18 @@ public class GetProductActivity extends AppCompatActivity implements GetProductA
         ApiClient.getUserService().getCart("Bearer " + accessToken).enqueue(new Callback<GetCartResponse>() {
             @Override
             public void onResponse(Call<GetCartResponse> call, Response<GetCartResponse> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful() && response.body() != null) {
                     // Handle cart data
-                    sendCustomNotification(
-                            "Items in your cart",
-                            "Items in your cart",
-                            "You have items in your cart. Don't forget to check out!"
-                    );
+                    GetCartResponse cartResponse = response.body();
+                    Collection<? extends CartItem> cartItems = cartResponse.getData();
+                    if (cartItems != null && !cartItems.isEmpty()) {
+                        // Cart has items
+                        sendCustomNotification(
+                                "Items in your cart",
+                                "Items in your cart",
+                                "You have items in your cart. Don't forget to check out!"
+                        );
+                    }
                 } else {
                     Toast.makeText(GetProductActivity.this, "Failed to fetch cart items", Toast.LENGTH_SHORT).show();
                 }
