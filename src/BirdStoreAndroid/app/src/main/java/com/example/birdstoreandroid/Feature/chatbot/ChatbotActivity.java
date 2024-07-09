@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -45,6 +46,9 @@ public class ChatbotActivity extends Activity {
         LinearLayoutManager manager = new LinearLayoutManager(this);
         chatsRV.setLayoutManager(manager);
         chatsRV.setAdapter(messageRVAdapter);
+
+        ImageView btnBack = findViewById(R.id.back_button);
+        btnBack.setOnClickListener(v -> finish());
 
         sendMsgIB.setOnClickListener(new View.OnClickListener() {
             @Override

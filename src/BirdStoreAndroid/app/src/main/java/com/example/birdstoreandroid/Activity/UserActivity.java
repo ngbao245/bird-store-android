@@ -15,6 +15,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import com.example.birdstoreandroid.API.ApiClient;
 import com.example.birdstoreandroid.Feature.Cart.CartActivity;
 import com.example.birdstoreandroid.Feature.GetProduct.GetProductActivity;
+import com.example.birdstoreandroid.Feature.chatbot.ChatbotActivity;
 import com.example.birdstoreandroid.Model.GetProductDetailResponse;
 import com.example.birdstoreandroid.Model.GetSingleUserResponse;
 import com.example.birdstoreandroid.R;
@@ -32,6 +33,8 @@ public class UserActivity extends AppCompatActivity {
 
     TextView tv_userName, tv_userEmail, tv_userPhone, tv_addressLine;
 
+    ImageView ivChatbot;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,11 +45,21 @@ public class UserActivity extends AppCompatActivity {
         tv_userPhone = (TextView) findViewById(R.id.tv_userPhone);
         tv_addressLine = (TextView) findViewById(R.id.tv_addressLine);
 
+        ivChatbot = (ImageView) findViewById(R.id.ivChatbot);
+
         cart_button = (FloatingActionButton) findViewById(R.id.cart_button);
         cart_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(UserActivity.this, CartActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ivChatbot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UserActivity.this, ChatbotActivity.class);
                 startActivity(intent);
             }
         });
