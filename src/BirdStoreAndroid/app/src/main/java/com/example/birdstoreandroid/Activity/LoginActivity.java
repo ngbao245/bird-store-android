@@ -153,12 +153,14 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
     private void saveAccessToken(String accessToken) {
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("access_token", accessToken);
         editor.apply();
     }
+
     private void saveUserId(String userId) {
         SharedPreferences sharedPreferences = getSharedPreferences("uid", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();

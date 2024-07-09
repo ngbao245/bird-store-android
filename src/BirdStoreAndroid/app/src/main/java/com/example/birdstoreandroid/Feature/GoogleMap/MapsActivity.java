@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.birdstoreandroid.Feature.GetProduct.GetProductActivity;
 import com.example.birdstoreandroid.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -37,11 +36,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
-
     public static final int LOCATION_PERMISSION_CODE = 100;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private double currentLat, currentLong;
-
     private SearchView searchBar;
     private LatLng destination;
     private Button btnCalculate;
@@ -53,15 +50,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
 
         initializeViews();
         setUpListeners();
-
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         requestUserPermission();
     }
@@ -184,23 +179,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LOCATION_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                showToast("Permission granted!");
                 fetchUserLocation();
             } else {
-                showToast("Location permission denied, please allow permission to access location");
+                showToast("Location permission denied");
             }
         }
     }
 
     @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
+    public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        googleMap.setMyLocationEnabled(true);
-        googleMap.getUiSettings().setZoomControlsEnabled(true);
     }
 
     private void showToast(String message) {

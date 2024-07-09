@@ -55,7 +55,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             Picasso.get().load(cartItem.getProduct().getImage()).into(itemImg);
 
             titleTxt.setText(cartItem.getProduct().getName());
-            itemPriceTxt.setText(String.valueOf(cartItem.getProduct().getPrice()));
+            itemPriceTxt.setText(String.valueOf(cartItem.getProduct().getPrice()) + " vnđ");
         }
     }
 }
