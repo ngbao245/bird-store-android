@@ -32,6 +32,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     AppCompatButton addToCart;
     private String productId;
     private int quantity = 1;
+    private float price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +96,10 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
     private void addToCart() {
+        if (price == 0) {
+            Toast.makeText(ProductDetailActivity.this, "Price information is not available", Toast.LENGTH_SHORT).show();
+            return;
+        }
         AddToCartRequest addToCartRequest = new AddToCartRequest();
         addToCartRequest.setProduct_id(productId);
         String accessToken = getAccessToken();
@@ -138,7 +143,8 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private void displayProductDetails(GetProductDetailResponse.ProductDetail productDetail) {
         pName.setText(productDetail.getName());
-        pPrice.setText(productDetail.getPrice() + " VND");
+        price = productDetail.getPrice();
+        pPrice.setText(String.format("%.0f VND", price));
         pDesc.setText(productDetail.getDescription());
         pGender.setText(productDetail.isSex() ? "Male" : "Female");
         Picasso.get()
