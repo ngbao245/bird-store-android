@@ -20,6 +20,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="33">
         <activity
+            android:name=".Feature.PhoiGiong.ListPhoigiongActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Feature.PhoiGiong.PhoigiongActivity"
+            android:exported="false" />
+        <activity
             android:name=".Feature.Order.OrderActivity"
             android:exported="true"
             android:label="Merchant Demo"
