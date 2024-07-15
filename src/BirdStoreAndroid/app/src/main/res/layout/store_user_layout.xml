@@ -86,6 +86,7 @@
         android:padding="16dp">
 
         <!-- Email -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -159,6 +160,12 @@
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/linkPhoigiong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="To Phoi Giong" />
     </LinearLayout>
 
     <!-- Logout Button -->
@@ -174,4 +181,5 @@
         android:textColor="@android:color/white"
         android:textSize="16dp"
         android:textStyle="bold" />
+
 </RelativeLayout>

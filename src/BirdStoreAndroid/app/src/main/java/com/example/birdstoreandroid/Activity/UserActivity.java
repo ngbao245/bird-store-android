@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +16,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import com.example.birdstoreandroid.API.ApiClient;
 import com.example.birdstoreandroid.Feature.Cart.CartActivity;
 import com.example.birdstoreandroid.Feature.GetProduct.GetProductActivity;
+import com.example.birdstoreandroid.Feature.PhoiGiong.PhoigiongActivity;
 import com.example.birdstoreandroid.Feature.chatbot.ChatbotActivity;
 import com.example.birdstoreandroid.Model.GetProductDetailResponse;
 import com.example.birdstoreandroid.Model.GetSingleUserResponse;
@@ -30,6 +32,7 @@ public class UserActivity extends AppCompatActivity {
     private AppCompatButton btnLogout;
     FloatingActionButton cart_button;
     private String userId;
+    Button toPhoigiong;
 
     TextView tv_userName, tv_userEmail, tv_userPhone, tv_addressLine;
 
@@ -44,6 +47,15 @@ public class UserActivity extends AppCompatActivity {
         tv_userEmail = (TextView) findViewById(R.id.tv_userEmail);
         tv_userPhone = (TextView) findViewById(R.id.tv_userPhone);
         tv_addressLine = (TextView) findViewById(R.id.tv_addressLine);
+        toPhoigiong = findViewById(R.id.linkPhoigiong);
+
+        toPhoigiong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UserActivity.this, PhoigiongActivity.class);
+                startActivity(intent);
+            }
+        });
 
         ivChatbot = (ImageView) findViewById(R.id.ivChatbot);
 

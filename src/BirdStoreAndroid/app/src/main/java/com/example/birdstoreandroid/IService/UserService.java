@@ -2,6 +2,9 @@ package com.example.birdstoreandroid.IService;
 
 import com.example.birdstoreandroid.Model.CreateOrderRequest;
 import com.example.birdstoreandroid.Model.CreateOrderResponse;
+import com.example.birdstoreandroid.Model.CreatePhoiGiongRequest;
+import com.example.birdstoreandroid.Model.CreatePhoiGiongResponse;
+import com.example.birdstoreandroid.Model.GetAllPhoigiongResponse;
 import com.example.birdstoreandroid.Model.GetCategoryResponse;
 import com.example.birdstoreandroid.Model.GetSingleUserResponse;
 import com.example.birdstoreandroid.Model.LoginRequest;
@@ -14,11 +17,14 @@ import com.example.birdstoreandroid.Model.GetProductResponse;
 import com.example.birdstoreandroid.Model.SignUpRequest;
 import com.example.birdstoreandroid.Model.SignUpResponse;
 
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -51,4 +57,11 @@ public interface UserService {
     //GetUser
     @GET("User/GetSingleID")
     Call<GetSingleUserResponse> getSingleUser(@Query("id") String id);
+
+    @POST("PhoiGiong/Create-Phoi-Chim")
+    @Multipart
+    Call<CreatePhoiGiongResponse> createPhoiGiong(@Header("Authorization") String accessToken, @Part("bird_Shop_Male") RequestBody birdShopMale, @Part("bird_Shop_Female") RequestBody birdShopFemale);
+
+    @GET("PhoiGiong/GetAllPhoiChim")
+    Call<GetAllPhoigiongResponse> getAllPhoigiong(@Header("Authorization") String accessToken);
 }
