@@ -50,7 +50,7 @@ public class ListPhoigiongActivity extends AppCompatActivity {
     private void fetchPhoiGiongData() {
         String accessToken = getAccessToken();
         UserService userService = ApiClient.getUserService();
-        Call<GetAllPhoigiongResponse> call = userService.getAllPhoigiong(accessToken);
+        Call<GetAllPhoigiongResponse> call = userService.getAllPhoigiong("Bearer " + accessToken);
         call.enqueue(new Callback<GetAllPhoigiongResponse>() {
             @Override
             public void onResponse(Call<GetAllPhoigiongResponse> call, Response<GetAllPhoigiongResponse> response) {

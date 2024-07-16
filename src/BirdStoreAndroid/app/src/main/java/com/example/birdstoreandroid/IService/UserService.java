@@ -58,10 +58,10 @@ public interface UserService {
     @GET("User/GetSingleID")
     Call<GetSingleUserResponse> getSingleUser(@Query("id") String id);
 
-    @POST("PhoiGiong/Create-Phoi-Chim")
+    @POST("PhoiGiong/api/PhoiGiong/Create-Phoi-Chim")
     @Multipart
     Call<CreatePhoiGiongResponse> createPhoiGiong(@Header("Authorization") String accessToken, @Part("bird_Shop_Male") RequestBody birdShopMale, @Part("bird_Shop_Female") RequestBody birdShopFemale);
 
-    @GET("PhoiGiong/GetAllPhoiChim")
+    @GET("PhoiGiong/api/PhoiGiong/GetAllPhoiChim")
     Call<GetAllPhoigiongResponse> getAllPhoigiong(@Header("Authorization") String accessToken);
 }
